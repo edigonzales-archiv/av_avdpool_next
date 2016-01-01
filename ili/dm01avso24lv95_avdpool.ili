@@ -108,6 +108,9 @@ MODEL DM01AVSO24LV95_AVDPOOL
         begehbar,
         nicht_begehbar);
       Punktzeichen: OPTIONAL Versicherungsart;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT NBIdent, Nummer;
     END LFP1;
     TABLE LFP1Pos =
@@ -116,11 +119,17 @@ MODEL DM01AVSO24LV95_AVDPOOL
       Ori: OPTIONAL Rotation // undefiniert = 100.0 //;
       HAli: OPTIONAL HALIGNMENT // undefiniert = Left //;
       VAli: OPTIONAL VALIGNMENT // undefiniert = Bottom //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT LFP1Pos_von;
     END LFP1Pos;
     TABLE LFP1Symbol =
       LFP1Symbol_von: -> LFP1;  !! Beziehung 1-c
       Ori: OPTIONAL Rotation // undefiniert = 0.0 //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT LFP1Symbol_von;
     END LFP1Symbol;
     TABLE HFP1Nachfuehrung =
@@ -135,6 +144,9 @@ MODEL DM01AVSO24LV95_AVDPOOL
       !! Datum1 geloescht und das Attribut GueltigerEintrag wird obligatorisch.
       GueltigerEintrag: OPTIONAL DATE;
       Datum1: OPTIONAL DATE;  !! z.B. Datum des gueltigen Eintrags
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT NBIdent, Identifikator;
     END HFP1Nachfuehrung;
     TABLE HFP1 =  !! Landesnivellement
@@ -147,6 +159,9 @@ MODEL DM01AVSO24LV95_AVDPOOL
       LageZuv: OPTIONAL Zuverlaessigkeit;
       HoeheGen: Genauigkeit;
       HoeheZuv: Zuverlaessigkeit;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT NBIdent, Nummer; Geometrie;
     END HFP1;
     TABLE HFP1Pos =
@@ -155,6 +170,9 @@ MODEL DM01AVSO24LV95_AVDPOOL
       Ori: OPTIONAL Rotation // undefiniert = 100.0 //;
       HAli: OPTIONAL HALIGNMENT // undefiniert = Left //;
       VAli: OPTIONAL VALIGNMENT // undefiniert = Bottom //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT HFP1Pos_von;
     END HFP1Pos;
   END FixpunkteKategorie1.
@@ -172,6 +190,9 @@ MODEL DM01AVSO24LV95_AVDPOOL
       !! Datum1 geloescht und das Attribut GueltigerEintrag wird obligatorisch.
       GueltigerEintrag: OPTIONAL DATE;
       Datum1: OPTIONAL DATE;  !! z.B. Datum des gueltigen Eintrags
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT NBIdent, Identifikator;
     END LFP2Nachfuehrung;
 
@@ -192,6 +213,9 @@ MODEL DM01AVSO24LV95_AVDPOOL
         begehbar,
         nicht_begehbar);
       Punktzeichen: OPTIONAL Versicherungsart;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT NBIdent, Nummer;
     END LFP2;
     TABLE LFP2Pos =
@@ -200,11 +224,17 @@ MODEL DM01AVSO24LV95_AVDPOOL
       Ori: OPTIONAL Rotation // undefiniert = 100.0 //;
       HAli: OPTIONAL HALIGNMENT // undefiniert = Left //;
       VAli: OPTIONAL VALIGNMENT // undefiniert = Bottom //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT LFP2Pos_von;
     END LFP2Pos;
     TABLE LFP2Symbol =
       LFP2Symbol_von: -> LFP2;  !! Beziehung 1-c
       Ori: OPTIONAL Rotation // undefiniert = 0.0 //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT LFP2Symbol_von;
     END LFP2Symbol;
     TABLE HFP2Nachfuehrung =
@@ -219,6 +249,9 @@ MODEL DM01AVSO24LV95_AVDPOOL
       !! Datum1 geloescht und das Attribut GueltigerEintrag wird obligatorisch.
       GueltigerEintrag: OPTIONAL DATE;
       Datum1: OPTIONAL DATE;  !! z.B. Datum des gueltigen Eintrags
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT NBIdent, Identifikator;
     END HFP2Nachfuehrung;
     TABLE HFP2 =  !! Kantonsnivellement
@@ -231,6 +264,9 @@ MODEL DM01AVSO24LV95_AVDPOOL
       LageZuv: OPTIONAL Zuverlaessigkeit;
       HoeheGen: Genauigkeit;
       HoeheZuv: Zuverlaessigkeit;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT NBIdent, Nummer; Geometrie;
     END HFP2;
     TABLE HFP2Pos =
@@ -239,6 +275,9 @@ MODEL DM01AVSO24LV95_AVDPOOL
       Ori: OPTIONAL Rotation // undefiniert = 100.0 //;
       HAli: OPTIONAL HALIGNMENT // undefiniert = Left //;
       VAli: OPTIONAL VALIGNMENT // undefiniert = Bottom //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT HFP2Pos_von;
     END HFP2Pos;
   END FixpunkteKategorie2.
@@ -256,6 +295,9 @@ MODEL DM01AVSO24LV95_AVDPOOL
       !! Datum1 geloescht und das Attribut GueltigerEintrag wird obligatorisch.
       GueltigerEintrag: OPTIONAL DATE;
       Datum1: OPTIONAL DATE;  !! z.B. Datum des gueltigen Eintrags
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
       IDENT NBIdent, Identifikator;
     END LFP3Nachfuehrung;
     TABLE LFP3 =
@@ -273,6 +315,9 @@ MODEL DM01AVSO24LV95_AVDPOOL
       Protokoll: (
         ja,
         nein);
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;              
     IDENT NBIdent, Nummer; Geometrie;
     END LFP3;
     TABLE LFP3Pos =
@@ -281,11 +326,17 @@ MODEL DM01AVSO24LV95_AVDPOOL
       Ori: OPTIONAL Rotation // undefiniert = 100.0 //;
       HAli: OPTIONAL HALIGNMENT // undefiniert = Left //;
       VAli: OPTIONAL VALIGNMENT // undefiniert = Bottom //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT LFP3Pos_von;
     END LFP3Pos;
     TABLE LFP3Symbol =
       LFP3Symbol_von: -> LFP3;  !! Beziehung 1-c
       Ori: OPTIONAL Rotation // undefiniert = 0.0 //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT LFP3Symbol_von;
     END LFP3Symbol;
  TABLE HilfsFPNachfuehrung =
@@ -301,6 +352,9 @@ MODEL DM01AVSO24LV95_AVDPOOL
       !! obligatorisch.
       GueltigerEintrag: OPTIONAL DATE;
       Datum1: OPTIONAL DATE;  !! z.B. Datum des gueltigen Eintrags
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
       IDENT NBIdent, Identifikator;
     END HilfsFPNachfuehrung;
 TABLE Hilfsfixpunkt =
@@ -323,6 +377,9 @@ TABLE Hilfsfixpunkt =
       Protokoll: (
         ja,
         nein);
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;              
       IDENT NBIdent, Nummer; Geometrie;
     END Hilfsfixpunkt;
     TABLE HilfsfixpunktPos =
@@ -332,11 +389,17 @@ TABLE Hilfsfixpunkt =
       Ori: OPTIONAL Rotation // undefiniert = 100.0 //;
       HAli: OPTIONAL HALIGNMENT // undefiniert = Left //;
       VAli: OPTIONAL VALIGNMENT // undefiniert = Bottom //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT HilfsfixpunktPos_von;
     END HilfsfixpunktPos;
     TABLE HilfsfixpunktSymbol =
       HilfsfixpunktSymbol_von: -> Hilfsfixpunkt;  !! Beziehung 1-c
       Ori: OPTIONAL Rotation // undefiniert = 0.0 //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT HilfsfixpunktSymbol_von;
     END HilfsfixpunktSymbol;
     TABLE HFP3Nachfuehrung =
@@ -351,6 +414,9 @@ TABLE Hilfsfixpunkt =
       !! Datum1 geloescht und das Attribut GueltigerEintrag wird obligatorisch.
       GueltigerEintrag: OPTIONAL DATE;
       Datum1: OPTIONAL DATE;  !! z.B. Datum des gueltigen Eintrags
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT NBIdent, Identifikator;
     END HFP3Nachfuehrung;
     TABLE HFP3 =  !! Gemeindenivellement, wenn keine Hoehe bei LFP3
@@ -363,6 +429,9 @@ TABLE Hilfsfixpunkt =
       LageZuv: OPTIONAL Zuverlaessigkeit;
       HoeheGen: Genauigkeit;
       HoeheZuv: Zuverlaessigkeit;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT NBIdent, Nummer; Geometrie;
     END HFP3;
     TABLE HFP3Pos =
@@ -371,6 +440,9 @@ TABLE Hilfsfixpunkt =
       Ori: OPTIONAL Rotation // undefiniert = 100.0 //;
       HAli: OPTIONAL HALIGNMENT // undefiniert = Left //;
       VAli: OPTIONAL VALIGNMENT // undefiniert = Bottom //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT HFP3Pos_von;
     END HFP3Pos;
   END FixpunkteKategorie3.
@@ -444,6 +516,9 @@ TABLE Hilfsfixpunkt =
       !! Datum1 geloescht und das Attribut GueltigerEintrag wird obligatorisch.
       GueltigerEintrag: OPTIONAL DATE;
       Datum1: OPTIONAL DATE;  !! z.B. Datum des gueltigen Eintrags
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT NBIdent, Identifikator;
     END BBNachfuehrung;
     TABLE ProjBoFlaeche =
@@ -453,6 +528,9 @@ TABLE Hilfsfixpunkt =
         WITHOUT OVERLAPS > 0.002;
       Qualitaet: Qualitaetsstandard;
       Art: BBArt;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END ProjBoFlaeche;
       !! Im Kt.SO existieren keine Gebaeudenummern (siehe TOPIC Gebaeudeadressen)
@@ -463,6 +541,9 @@ TABLE Hilfsfixpunkt =
       !! GWR_EGID falls die Definition der Gebaeude mit jener des
       !! BFS uebereinstimmt
       GWR_EGID: OPTIONAL [1..999999999];
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END ProjGebaeudenummer;
     !! Im Kt.SO existieren keine Gebaeudenummern (siehe TOPIC Gebaeudeadressen)
@@ -474,11 +555,17 @@ TABLE Hilfsfixpunkt =
       HAli: OPTIONAL HALIGNMENT // undefiniert = Center //;
       VAli: OPTIONAL VALIGNMENT // undefiniert = Half //;
       Groesse: OPTIONAL Schriftgroesse // undefiniert = mittel //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END ProjGebaeudenummerPos;
     TABLE ProjObjektname =
       ProjObjektname_von: -> ProjBoFlaeche;  !! Beziehung 1-mc
       Name: TEXT*30;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END ProjObjektname;
     TABLE ProjObjektnamePos =
@@ -489,6 +576,9 @@ TABLE Hilfsfixpunkt =
       HAli: OPTIONAL HALIGNMENT // undefiniert = Center //;
       VAli: OPTIONAL VALIGNMENT // undefiniert = Half //;
       Groesse: OPTIONAL Schriftgroesse // undefiniert = mittel //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END ProjObjektnamePos;
     !! siehe auch Bemerkungen zu BoFlaecheSymbol
@@ -496,6 +586,9 @@ TABLE Hilfsfixpunkt =
       ProjBoFlaecheSymbol_von: -> ProjBoFlaeche;  !! Beziehung 1-mc
       Pos: LKoord // Pos innerhalb ProjBoFlaeche //;
       Ori: OPTIONAL Rotation // undefiniert = 0.0 //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END ProjBoFlaecheSymbol;
     TABLE BoFlaeche =
@@ -505,6 +598,9 @@ TABLE Hilfsfixpunkt =
         WITHOUT OVERLAPS > 0.002;
       Qualitaet: Qualitaetsstandard;
       Art: BBArt;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END BoFlaeche;
     !! Im Kt.SO existieren keine Gebaeudenummern (siehe TOPIC Gebaeudeadressen)
@@ -528,11 +624,17 @@ TABLE Hilfsfixpunkt =
       HAli: OPTIONAL HALIGNMENT // undefiniert = Center //;
       VAli: OPTIONAL VALIGNMENT // undefiniert = Half //;
       Groesse: OPTIONAL Schriftgroesse // undefiniert = mittel //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END GebaeudenummerPos;
     TABLE Objektname =
       Objektname_von: -> BoFlaeche;  !! Beziehung 1-mc
       Name: TEXT*30;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END Objektname;
     TABLE ObjektnamePos =
@@ -542,6 +644,9 @@ TABLE Hilfsfixpunkt =
       HAli: OPTIONAL HALIGNMENT // undefiniert = Center //;
       VAli: OPTIONAL VALIGNMENT // undefiniert = Half //;
       Groesse: OPTIONAL Schriftgroesse // undefiniert = mittel //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END ObjektnamePos;
     !! Im Plan fuer das Grundbuch werden Bodenbedeckungsflaechen
@@ -555,6 +660,9 @@ TABLE Hilfsfixpunkt =
       BoFlaecheSymbol_von: -> BoFlaeche;  !! Beziehung 1-mc
       Pos: LKoord // Pos innerhalb BoFlaeche //;
       Ori: OPTIONAL Rotation // undefiniert = 0.0 //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END BoFlaecheSymbol;
     TABLE Einzelpunkt =
@@ -567,6 +675,9 @@ Identifikator: OPTIONAL TEXT*12;
       ExaktDefiniert: (    !! Toleranzvorschriften gemaess TVAV beachten
         Ja,
         Nein);
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;              
     IDENT Geometrie;
     END Einzelpunkt;
     TABLE EinzelpunktPos =
@@ -576,6 +687,9 @@ Identifikator: OPTIONAL TEXT*12;
       Ori: OPTIONAL Rotation // undefiniert = 100.0 //;
       HAli: OPTIONAL HALIGNMENT // undefiniert = Left //;
       VAli: OPTIONAL VALIGNMENT // undefiniert = Bottom //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT EinzelpunktPos_von;
     END EinzelpunktPos;
   END Bodenbedeckung.
@@ -647,46 +761,70 @@ Identifikator: OPTIONAL TEXT*12;
       !! Datum1 geloescht und das Attribut GueltigerEintrag wird obligatorisch.
       GueltigerEintrag: OPTIONAL DATE;
       Datum1: OPTIONAL DATE;  !! z.B. Datum des gueltigen Eintrags
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT NBIdent, Identifikator;
     END EONachfuehrung;
     TABLE Einzelobjekt =
       Entstehung: -> EONachfuehrung;  !! Beziehung 1-mc
       Qualitaet: Qualitaetsstandard;
       Art: EOArt;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END Einzelobjekt;
     TABLE Flaechenelement =
       Flaechenelement_von: -> Einzelobjekt;  !! Beziehung 1-mc
       Geometrie: SURFACE WITH (STRAIGHTS, ARCS) VERTEX LKoord
         WITHOUT OVERLAPS > 0.002;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;              
     NO IDENT
     END Flaechenelement;
     TABLE FlaechenelementSymbol =  !! z.B. Fliessrichtung bei Rinnsal
       FlaechenelementSymbol_von: -> Flaechenelement;  !! Beziehung 1-mc
       Pos: LKoord;
       Ori: OPTIONAL Rotation // undefiniert = 0.0 //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END FlaechenelementSymbol;
     TABLE Linienelement =
       Linienelement_von: -> Einzelobjekt;  !! Beziehung 1-mc
       Geometrie: POLYLINE WITH (STRAIGHTS, ARCS) VERTEX LKoord;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END Linienelement;
     TABLE LinienelementSymbol =  !! z.B. Faehre
       LinienelementSymbol_von: -> Linienelement;  !! Beziehung 1-mc
       Pos: LKoord;
       Ori: Rotation;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END LinienelementSymbol;
     TABLE Punktelement =
       Punktelement_von: -> Einzelobjekt;  !! Beziehung 1-mc
       Geometrie: LKoord;
       Ori: Rotation;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END Punktelement;
     TABLE Objektname =
       Objektname_von: -> Einzelobjekt;  !! Beziehung 1-mc
       Name: TEXT*30;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;       
     NO IDENT
     END Objektname;
     TABLE ObjektnamePos =
@@ -696,6 +834,9 @@ Identifikator: OPTIONAL TEXT*12;
       HAli: OPTIONAL HALIGNMENT // undefiniert = Center //;
       VAli: OPTIONAL VALIGNMENT // undefiniert = Half //;
       Groesse: OPTIONAL Schriftgroesse // undefiniert = mittel //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END ObjektnamePos;
     TABLE Objektnummer =
@@ -704,6 +845,9 @@ Identifikator: OPTIONAL TEXT*12;
       !! GWR_EGID falls die Definition der Gebaeude mit jener des
       !! BFS uebereinstimmt
       GWR_EGID: OPTIONAL [1..999999999];
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END Objektnummer;
     TABLE ObjektnummerPos =
@@ -713,6 +857,9 @@ Identifikator: OPTIONAL TEXT*12;
       HAli: OPTIONAL HALIGNMENT // undefiniert = Center //;
       VAli: OPTIONAL VALIGNMENT // undefiniert = Half //;
       Groesse: OPTIONAL Schriftgroesse // undefiniert = mittel //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END ObjektnummerPos;
     TABLE Einzelpunkt =
@@ -725,6 +872,9 @@ Identifikator: OPTIONAL TEXT*12;
       ExaktDefiniert: (    !! Toleranzvorschriften gemaess TVAV beachten
         Ja,
         Nein);
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;              
     IDENT Geometrie;
     END Einzelpunkt;
     TABLE EinzelpunktPos =
@@ -734,6 +884,9 @@ Identifikator: OPTIONAL TEXT*12;
       Ori: OPTIONAL Rotation // undefiniert = 100.0 //;
       HAli: OPTIONAL HALIGNMENT // undefiniert = Left //;
       VAli: OPTIONAL VALIGNMENT // undefiniert = Bottom //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT EinzelpunktPos_von;
     END EinzelpunktPos;
   END Einzelobjekte.
@@ -752,12 +905,18 @@ Identifikator: OPTIONAL TEXT*12;
       !! Datum1 geloescht und das Attribut GueltigerEintrag wird obligatorisch.
       GueltigerEintrag: OPTIONAL DATE;
       Datum1: OPTIONAL DATE;  !! z.B. Datum des gueltigen Eintrags
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT NBIdent, Identifikator;
     END HONachfuehrung;
     TABLE Hoehenpunkt =  !! gueltig oder projektiert
       Entstehung: -> HONachfuehrung;  !! Beziehung 1-mc
       Geometrie: HKoord;
       Qualitaet: Qualitaetsstandard;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT Geometrie;
     END Hoehenpunkt;
     TABLE HoehenpunktPos =
@@ -767,6 +926,9 @@ Identifikator: OPTIONAL TEXT*12;
       Ori: OPTIONAL Rotation // undefiniert = 100.0 //;
       HAli: OPTIONAL HALIGNMENT // undefiniert = Left //;
       VAli: OPTIONAL VALIGNMENT // undefiniert = Bottom //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT HoehenpunktPos_von;
     END HoehenpunktPos;
     TABLE Gelaendekante =
@@ -777,6 +939,9 @@ Identifikator: OPTIONAL TEXT*12;
         Bruchkante,
         Strukturlinie,
         weitere); !! Keine Objekte in der Kategorie weitere, nur fuer Erweiterungen
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;              
     NO IDENT
     END Gelaendekante;
     TABLE Aussparung =
@@ -786,6 +951,9 @@ Identifikator: OPTIONAL TEXT*12;
       Art: (
         ToteFlaeche,
         weitere); !! Keine Objekte in der Kategorie weitere, nur fuer Erweiterungen
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;              
     NO IDENT
     END Aussparung;
   END Hoehen.
@@ -803,6 +971,9 @@ Identifikator: OPTIONAL TEXT*12;
       !! Datum1 geloescht und das Attribut GueltigerEintrag wird obligatorisch.
       GueltigerEintrag: OPTIONAL DATE;
       Datum1: OPTIONAL DATE;  !! z.B. Datum des gueltigen Eintrags
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT NBIdent, Identifikator;
     END NKNachfuehrung;
     TABLE Flurname =
@@ -810,6 +981,9 @@ Identifikator: OPTIONAL TEXT*12;
       Name: TEXT*40;
       Geometrie: AREA WITH (STRAIGHTS, ARCS) VERTEX LKoord
         WITHOUT OVERLAPS > 0.002;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;              
     NO IDENT
     END Flurname;
     TABLE FlurnamePos =
@@ -820,6 +994,9 @@ Identifikator: OPTIONAL TEXT*12;
       VAli: OPTIONAL VALIGNMENT // undefiniert = Half //;
       Groesse: OPTIONAL Schriftgroesse // undefiniert = mittel //;
       Stil: OPTIONAL Schriftstil // undefiniert = normal //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END FlurnamePos;
     TABLE Ortsname =
@@ -828,6 +1005,9 @@ Identifikator: OPTIONAL TEXT*12;
       Geometrie: SURFACE WITH (STRAIGHTS, ARCS) VERTEX LKoord
         WITHOUT OVERLAPS > 0.002;
       Typ: OPTIONAL TEXT*30;  !! Vergabe durch Kanton
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END Ortsname;
     TABLE OrtsnamePos =
@@ -838,11 +1018,17 @@ Identifikator: OPTIONAL TEXT*12;
       VAli: OPTIONAL VALIGNMENT // undefiniert = Half //;
       Groesse: OPTIONAL Schriftgroesse // undefiniert = mittel //;
       Stil: OPTIONAL Schriftstil // undefiniert = normal //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END OrtsnamePos;
     TABLE Gelaendename =
       Entstehung: -> NKNachfuehrung;  !! Beziehung 1-mc
       Name: TEXT*40;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END Gelaendename;
     TABLE GelaendenamePos =
@@ -853,6 +1039,9 @@ Identifikator: OPTIONAL TEXT*12;
       VAli: OPTIONAL VALIGNMENT // undefiniert = Half //;
       Groesse: OPTIONAL Schriftgroesse // undefiniert = mittel //;
       Stil: OPTIONAL Schriftstil // undefiniert = normal //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END GelaendenamePos;
   END Nomenklatur.
@@ -884,6 +1073,9 @@ Identifikator: OPTIONAL TEXT*12;
       GBEintrag: OPTIONAL DATE;
       Datum1: OPTIONAL DATE;  !! z.B. Techn. Bearbeitung
       Datum2: OPTIONAL DATE;  !! Vergabe durch Kanton, z.B. GB-Eintrag, Genehmigung
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT NBIdent, Identifikator;
     END LSNachfuehrung;
     !! Umfasst alle Grenzpunkte einer Liegenschaft, ausgenommen Stuetzpunkte
@@ -906,6 +1098,9 @@ Identifikator: OPTIONAL TEXT*12;
       HoheitsgrenzsteinAlt: (
         ja,
         nein);
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;              
     IDENT Geometrie;
     END Grenzpunkt;
     TABLE GrenzpunktPos =
@@ -915,11 +1110,17 @@ Identifikator: OPTIONAL TEXT*12;
       Ori: OPTIONAL Rotation // undefiniert = 100.0 //;
       HAli: OPTIONAL HALIGNMENT // undefiniert = Left //;
       VAli: OPTIONAL VALIGNMENT // undefiniert = Bottom //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT GrenzpunktPos_von;
     END GrenzpunktPos;
     TABLE GrenzpunktSymbol =
       GrenzpunktSymbol_von: -> Grenzpunkt;  !! Beziehung 1-c
       Ori: OPTIONAL Rotation // undefiniert = 0.0 //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT GrenzpunktSymbol_von;
     END GrenzpunktSymbol;
     TABLE ProjGrundstueck =
@@ -944,6 +1145,9 @@ Identifikator: OPTIONAL TEXT*12;
       !! Das heisst mehrere Objekte ProjLiegenschaft, ProjSelbstRecht
       !! oder ProjBergwerk werden zu einem Objekt ProjGrundstueck.
       GesamteFlaechenmass: OPTIONAL DIM2 1 999999999;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT Entstehung, NBIdent, Nummer;
     END ProjGrundstueck;
     TABLE ProjGrundstueckPos =
@@ -956,6 +1160,9 @@ Identifikator: OPTIONAL TEXT*12;
       Groesse: OPTIONAL Schriftgroesse // undefiniert = mittel //;
       Hilfslinie: OPTIONAL POLYLINE WITH (STRAIGHTS) VERTEX LKoord;
       !! Hinweisstriche fuer Grundstuecknummer
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END ProjGrundstueckPos;
     TABLE ProjLiegenschaft =
@@ -973,6 +1180,9 @@ Identifikator: OPTIONAL TEXT*12;
             unvollstaendig);
         END;
       Flaechenmass: DIM2 1 999999999;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END ProjLiegenschaft;
     !! Falls bei ProjSelbstRecht keine Flaeche vorhanden ist, existiert hier
@@ -994,6 +1204,9 @@ Identifikator: OPTIONAL TEXT*12;
             unvollstaendig);
         END;
       Flaechenmass: DIM2 1 999999999;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END ProjSelbstRecht;
     !! Falls bei ProjBergwerk keine Flaeche vorhanden ist, existiert hier
@@ -1013,6 +1226,9 @@ Identifikator: OPTIONAL TEXT*12;
             unvollstaendig);
         END;
       Flaechenmass: DIM2 1 999999999;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END ProjBergwerk;
     TABLE Grundstueck =
@@ -1037,6 +1253,9 @@ Identifikator: OPTIONAL TEXT*12;
       !! Das heisst mehrere Objekte Liegenschaft, SelbstRecht
       !! oder Bergwerk werden zu einem Objekt Grundstueck.
       GesamteFlaechenmass: OPTIONAL DIM2 1 999999999;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT NBIdent, Nummer;
     END Grundstueck;
     TABLE GrundstueckPos =
@@ -1048,6 +1267,9 @@ Identifikator: OPTIONAL TEXT*12;
       Groesse: OPTIONAL Schriftgroesse // undefiniert = mittel //;
       Hilfslinie: OPTIONAL POLYLINE WITH (STRAIGHTS) VERTEX LKoord;
       !! Hinweisstriche fuer Grundstuecksnummer
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END GrundstueckPos;
     TABLE Liegenschaft =
@@ -1064,6 +1286,9 @@ Identifikator: OPTIONAL TEXT*12;
             unvollstaendig);
         END;
       Flaechenmass: DIM2 1 999999999;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END Liegenschaft;
     !! Falls bei SelbstRecht keine Flaeche vorhanden ist, existiert hier
@@ -1085,6 +1310,9 @@ Identifikator: OPTIONAL TEXT*12;
             unvollstaendig);
         END;
       Flaechenmass: DIM2 1 999999999;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END SelbstRecht;
     !! Falls bei Bergwerk keine Flaeche vorhanden ist, existiert hier
@@ -1104,6 +1332,9 @@ Identifikator: OPTIONAL TEXT*12;
             unvollstaendig);
         END;
       Flaechenmass: DIM2 1 999999999;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END Bergwerk;
   END Liegenschaften.
@@ -1129,6 +1360,9 @@ Identifikator: OPTIONAL TEXT*12;
       !! Datum1 geloescht und das Attribut GueltigerEintrag wird obligatorisch.
       GueltigerEintrag: OPTIONAL DATE;
       Datum1: OPTIONAL DATE;  !! z.B. Datum des gueltigen Eintrags
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT NBIdent, Identifikator;
     END RLNachfuehrung;
     TABLE Leitungsobjekt =
@@ -1136,6 +1370,9 @@ Identifikator: OPTIONAL TEXT*12;
       Betreiber: TEXT*30;
       Qualitaet: Qualitaetsstandard;
       Art: Medium;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END Leitungsobjekt;
     TABLE LeitungsobjektPos =
@@ -1146,6 +1383,9 @@ Identifikator: OPTIONAL TEXT*12;
       HAli: HALIGNMENT;
       VAli: VALIGNMENT;
       Groesse: OPTIONAL Schriftgroesse // undefiniert = mittel //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END LeitungsobjektPos;
     TABLE Flaechenelement =
@@ -1158,6 +1398,9 @@ Identifikator: OPTIONAL TEXT*12;
         !! Linienart-Werte sollen grundsaetzlich als undefiniert
         !! ausgegeben werden, ausgenommen Wert sichtbar.
         END;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;              
     NO IDENT
     END Flaechenelement;
     TABLE Linienelement =
@@ -1167,6 +1410,9 @@ Identifikator: OPTIONAL TEXT*12;
         sichtbar);
       !! Linienart-Werte sollen grundsaetzlich als undefiniert
       !! ausgegeben werden, ausgenommen Wert sichtbar.
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END Linienelement;
     TABLE Punktelement =
@@ -1174,6 +1420,9 @@ Identifikator: OPTIONAL TEXT*12;
       Geometrie: LKoord;
       HoeheGeom: OPTIONAL Hoehe;
       Ori: Rotation;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END Punktelement;
     TABLE Signalpunkt =
@@ -1187,6 +1436,9 @@ Identifikator: OPTIONAL TEXT*12;
         Signal,
         Tafel_Stein,
         weitere); !! Keine Objekte in der Kategorie weitere, nur fuer Erweiterungen
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;              
     NO IDENT
     END Signalpunkt;
     TABLE SignalpunktPos =
@@ -1195,6 +1447,9 @@ Identifikator: OPTIONAL TEXT*12;
       Ori: OPTIONAL Rotation // undefiniert = 100.0 //;
       HAli: OPTIONAL HALIGNMENT // undefiniert = Left //;
       VAli: OPTIONAL VALIGNMENT // undefiniert = Bottom //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT SignalpunktPos_von;
     END SignalpunktPos;
     TABLE Einzelpunkt =
@@ -1207,6 +1462,9 @@ Identifikator: OPTIONAL TEXT*12;
       ExaktDefiniert: (    !! Toleranzvorschriften gemaess TVAV beachten
         Ja,
         Nein);
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;              
     IDENT Geometrie;
     END Einzelpunkt;
     TABLE EinzelpunktPos =
@@ -1216,6 +1474,9 @@ Identifikator: OPTIONAL TEXT*12;
       Ori: OPTIONAL Rotation // undefiniert = 100.0 //;
       HAli: OPTIONAL HALIGNMENT // undefiniert = Left //;
       VAli: OPTIONAL VALIGNMENT // undefiniert = Bottom //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT EinzelpunktPos_von;
     END EinzelpunktPos;
   END Rohrleitungen.
@@ -1235,6 +1496,9 @@ Identifikator: OPTIONAL TEXT*12;
       NBNummer: TEXT*10;
       TechDossier: TEXT*12;
       GueltigerEintrag: OPTIONAL DATE;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT Kt, NBNummer;  !! ergibt Benutzerschluessel NBIdent
     END Nummerierungsbereich;
     !! Die Geometrien der Nummerierungsbereiche, die das Territorium gemaess der
@@ -1246,6 +1510,9 @@ Identifikator: OPTIONAL TEXT*12;
       NBGeometrie_von: -> Nummerierungsbereich;  !! Beziehung 1-m
       Geometrie: SURFACE WITH (STRAIGHTS, ARCS) VERTEX LKoord
         WITHOUT OVERLAPS > 0.002;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;              
     NO IDENT
     END NBGeometrie;
     TABLE NummerierungsbereichPos =
@@ -1256,6 +1523,9 @@ Identifikator: OPTIONAL TEXT*12;
       HAli: OPTIONAL HALIGNMENT // undefiniert = Center //;
       VAli: OPTIONAL VALIGNMENT // undefiniert = Half //;
       Groesse: OPTIONAL Schriftgroesse // undefiniert = mittel //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END NummerierungsbereichPos;
   END Nummerierungsbereiche.
@@ -1274,6 +1544,9 @@ Identifikator: OPTIONAL TEXT*12;
       !! Datum1 geloescht und das Attribut GueltigerEintrag wird obligatorisch.
       GueltigerEintrag: OPTIONAL DATE;
       Datum1: OPTIONAL DATE;  !! z.B. Datum des gueltigen Eintrags
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT NBIdent, Identifikator;
     END GEMNachfuehrung;
     !! Enthaelt alle Stuetzpunkte, die in ihrer Funktion eine
@@ -1300,6 +1573,9 @@ Identifikator: OPTIONAL TEXT*12;
         Nein);
       NBIdent: OPTIONAL TEXT*12;  !! Beziehung 1-m zu Nummerierungsbereich
                !! fuer nummerierte Landes- und Kantonsgrenzsteine zwingend
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;                     
     IDENT Geometrie;
     END Hoheitsgrenzpunkt;
     TABLE HoheitsgrenzpunktPos =
@@ -1309,16 +1585,25 @@ Identifikator: OPTIONAL TEXT*12;
       Ori: OPTIONAL Rotation // undefiniert = 100.0 //;
       HAli: OPTIONAL HALIGNMENT // undefiniert = Left //;
       VAli: OPTIONAL VALIGNMENT // undefiniert = Bottom //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT HoheitsgrenzpunktPos_von;
     END HoheitsgrenzpunktPos;
     TABLE HoheitsgrenzpunktSymbol =
       HoheitsgrenzpunktSymbol_von: -> Hoheitsgrenzpunkt;  !! Beziehung 1-c
       Ori: OPTIONAL Rotation // undefiniert = 0.0 //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT HoheitsgrenzpunktSymbol_von;
     END HoheitsgrenzpunktSymbol;
     TABLE Gemeinde =
       Name: TEXT*30;
       BFSNr: [1 .. 9999];
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT BFSNr;
     END Gemeinde;
     TABLE ProjGemeindegrenze =
@@ -1328,6 +1613,9 @@ Identifikator: OPTIONAL TEXT*12;
       Geometrie: POLYLINE WITH (STRAIGHTS, ARCS) VERTEX LKoord BASE
         // Geometrie nur Hoheitsgrenzpunkt //
         WITHOUT OVERLAPS > 0.002;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;              
     NO IDENT
     END ProjGemeindegrenze;
     TABLE Gemeindegrenze =  !! auch als Exklave moeglich
@@ -1345,6 +1633,9 @@ Identifikator: OPTIONAL TEXT*12;
             provisorisch,   !! definierte Grenze, aber qualitativ ungenuegend
             undefiniert);   !! z.B. unbekannter Seeabschluss
           END;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;                
     NO IDENT
     END Gemeindegrenze;
   END Gemeindegrenzen.
@@ -1358,6 +1649,9 @@ Identifikator: OPTIONAL TEXT*12;
         streitig,       !! streitige Grenze
         provisorisch,   !! definierte Grenze, aber qualitativ ungenuegend
         undefiniert);   !! z.B. unbekannter Seeabschluss
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;              
     NO IDENT
     END Bezirksgrenzabschnitt;
   END Bezirksgrenzen.
@@ -1371,6 +1665,9 @@ Identifikator: OPTIONAL TEXT*12;
         streitig,       !! streitige Grenze
         provisorisch,   !! definierte Grenze, aber qualitativ ungenuegend
         undefiniert);   !! z.B. unbekannter Seeabschluss
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;              
     NO IDENT
     END Kantonsgrenzabschnitt;
   END Kantonsgrenzen.
@@ -1384,6 +1681,9 @@ Identifikator: OPTIONAL TEXT*12;
         streitig,       !! streitige Grenze
         provisorisch,   !! definierte Grenze, aber qualitativ ungenuegend
         undefiniert);   !! z.B. unbekannter Seeabschluss
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;              
     NO IDENT
     END Landesgrenzabschnitt;
   END Landesgrenzen.
@@ -1394,12 +1694,18 @@ Identifikator: OPTIONAL TEXT*12;
       Nummer: TEXT*12;
       TechDossier: TEXT*12;
       GueltigerEintrag: OPTIONAL DATE;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT NBIdent, Nummer;
     END Plan;
     TABLE Plangeometrie =
       Plangeometrie_von: -> Plan;  !! Beziehung 1-m
       Geometrie: AREA WITH (STRAIGHTS, ARCS) VERTEX LKoord
         WITHOUT OVERLAPS > 0.002;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;              
     NO IDENT
     END Plangeometrie;
     TABLE PlanPos =
@@ -1409,6 +1715,9 @@ Identifikator: OPTIONAL TEXT*12;
       HAli: OPTIONAL HALIGNMENT // undefiniert = Center //;
       VAli: OPTIONAL VALIGNMENT // undefiniert = Half //;
       Groesse: OPTIONAL Schriftgroesse // undefiniert = mittel //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END PlanPos;
   END Planeinteilungen.
@@ -1426,6 +1735,9 @@ Identifikator: OPTIONAL TEXT*12;
         TS3,
         TS4,
         TS5);
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;              
     IDENT NBIdent, Identifikator;
     END Toleranzstufe;
     TABLE ToleranzstufePos =
@@ -1435,6 +1747,9 @@ Identifikator: OPTIONAL TEXT*12;
       HAli: OPTIONAL HALIGNMENT // undefiniert = Center //;
       VAli: OPTIONAL VALIGNMENT // undefiniert = Half //;
       Groesse: OPTIONAL Schriftgroesse // undefiniert = mittel //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END ToleranzstufePos;
   END TSEinteilung.
@@ -1447,6 +1762,9 @@ Identifikator: OPTIONAL TEXT*12;
       Geometrie: SURFACE WITH (STRAIGHTS, ARCS) VERTEX LKoord
         WITHOUT OVERLAPS > 0.002;
       GueltigerEintrag: OPTIONAL DATE;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT NBIdent, Identifikator;
     END Rutschung;
     TABLE RutschungPos =
@@ -1456,6 +1774,9 @@ Identifikator: OPTIONAL TEXT*12;
       HAli: OPTIONAL HALIGNMENT // undefiniert = Center //;
       VAli: OPTIONAL VALIGNMENT // undefiniert = Half //;
       Groesse: OPTIONAL Schriftgroesse // undefiniert = mittel //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END RutschungPos;
   END Rutschgebiete.
@@ -1473,18 +1794,27 @@ Identifikator: OPTIONAL TEXT*12;
         WITHOUT OVERLAPS > 0.002; !! DM01: zusaetzlich zur SN
       Gueltigkeit: Status;
       GueltigerEintrag: DATE;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT NBIdent, Identifikator;
     END OSNachfuehrung;
     TABLE OrtschaftsVerbund = !! Norm SN 612040: OrtschaftsVerbund
       !! Dieses Attribut ist nur noetig, um eine gueltige Syntax
       !! im INTERLIS 1 zu haben
       Leer: OPTIONAL TEXT*1;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END OrtschaftsVerbund;
     TABLE OrtschaftsVerbundText=
         OrtschaftsVerbundText_von: -> OrtschaftsVerbund;  !! Beziehung 1-m
         Text: TEXT*200;
         Sprache: Sprachtyp;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;              
     IDENT OrtschaftsVerbundText_von, Sprache;
     END OrtschaftsVerbundText;
     !! Die realen Ortschaften bilden AREA
@@ -1495,6 +1825,9 @@ Identifikator: OPTIONAL TEXT*12;
       InAenderung: (ja, nein);
       Flaeche: SURFACE WITH (STRAIGHTS, ARCS) VERTEX LKoord
         WITHOUT OVERLAPS > 0.002;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;              
     NO IDENT
     END Ortschaft;
     !! Beispiel fuer Text, KurzText und IndexText:
@@ -1507,6 +1840,9 @@ Identifikator: OPTIONAL TEXT*12;
         KurzText: OPTIONAL TEXT*18;
         IndexText: OPTIONAL TEXT*16;
         Sprache: Sprachtyp;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;              
     IDENT OrtschaftsName_von, Sprache;
     END OrtschaftsName;
     TABLE OrtschaftsName_Pos =  !! DM01: zusaetzlich zur SN
@@ -1517,6 +1853,9 @@ Identifikator: OPTIONAL TEXT*12;
       HAli: OPTIONAL HALIGNMENT // undefiniert = Center //;
       VAli: OPTIONAL VALIGNMENT // undefiniert = Half //;
       Groesse: OPTIONAL Schriftgroesse // undefiniert = mittel //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END OrtschaftsName_Pos;
     TABLE PLZ6Nachfuehrung = !! SN Norm = NachfuerbareSache
@@ -1529,6 +1868,9 @@ Identifikator: OPTIONAL TEXT*12;
         WITHOUT OVERLAPS > 0.002; !! DM01: zusaetzlich zur SN
       Gueltigkeit: Status;
       GueltigerEintrag: DATE;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT NBIdent, Identifikator;
     END PLZ6Nachfuehrung ;
     !! Eine reale PLZ6 auf eine nicht reale Ortschaft ist zu vermeiden.
@@ -1545,6 +1887,9 @@ Identifikator: OPTIONAL TEXT*12;
       InAenderung: (ja, nein);
       PLZ: [1000 .. 9999];
       Zusatzziffern: [0 .. 99];
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT PLZ, Zusatzziffern;
     END PLZ6;
 
@@ -1566,6 +1911,9 @@ Identifikator: OPTIONAL TEXT*12;
         WITHOUT OVERLAPS > 0.002; !! DM01: zusaetzlich zur SN
       Gueltigkeit: Status;
       GueltigerEintrag: DATE;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT NBIdent, Identifikator;
     END GEBNachfuehrung;
     TABLE Lokalisation =
@@ -1585,6 +1933,9 @@ Identifikator: OPTIONAL TEXT*12;
           BenanntesGebiet,
           Strasse,
           Platz);
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;                
     NO IDENT
     END Lokalisation;
 
@@ -1598,6 +1949,9 @@ Identifikator: OPTIONAL TEXT*12;
       KurzText: OPTIONAL TEXT*24;
       IndexText: OPTIONAL TEXT*16;
       Sprache: Sprachtyp;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT Benannte, Sprache;
     END LokalisationsName;
 
@@ -1612,6 +1966,9 @@ Identifikator: OPTIONAL TEXT*12;
       VAli: OPTIONAL VALIGNMENT // undefiniert = Half //;
       Groesse: OPTIONAL Schriftgroesse // undefiniert = mittel //;
       Hilfslinie: OPTIONAL POLYLINE WITH (STRAIGHTS) VERTEX LKoord;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END LokalisationsNamePos;
     TABLE BenanntesGebiet =
@@ -1619,6 +1976,9 @@ Identifikator: OPTIONAL TEXT*12;
                               !! Beziehung 1-mc
       Flaeche: SURFACE WITH (STRAIGHTS, ARCS) VERTEX LKoord
         WITHOUT OVERLAPS > 0.002;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;              
     NO IDENT
     END BenanntesGebiet;
     !! Die Geometrie entspricht der Strassenachse,
@@ -1635,6 +1995,9 @@ Identifikator: OPTIONAL TEXT*12;
       !! Statt ORDERED Strassenstueck
       Ordnung: [1 .. 999];  !! Reihenfolge der Strassenstuecke
       IstAchse: (ja, nein);
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT Strassenstueck_von, Ordnung;
     END Strassenstueck;
     !! Auch fuer projektierte Gebaeude
@@ -1670,6 +2033,9 @@ Identifikator: OPTIONAL TEXT*12;
         !! Eidg. Eingang-Identifikator wenn verfuegbar,
         !! siehe Erklaerung Kapitel 3.18.2
       GWR_EDID: OPTIONAL [0..99]; !! DM01: zusaetzlich zur SN
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END Gebaeudeeingang;
     TABLE HausnummerPos = !! DM01: zusaetzlich zur SN
@@ -1679,6 +2045,9 @@ Identifikator: OPTIONAL TEXT*12;
       HAli: OPTIONAL HALIGNMENT // undefiniert = Center //;
       VAli: OPTIONAL VALIGNMENT // undefiniert = Half //;
       Groesse: OPTIONAL Schriftgroesse // undefiniert = mittel //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END HausnummerPos;
 
@@ -1688,6 +2057,9 @@ Identifikator: OPTIONAL TEXT*12;
       KurzText: OPTIONAL TEXT*24;
       IndexText: OPTIONAL TEXT*16;
       Sprache: Sprachtyp;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT GebaeudeName_von, Sprache;
     END GebaeudeName;
 
@@ -1700,6 +2072,9 @@ Identifikator: OPTIONAL TEXT*12;
       VAli: OPTIONAL VALIGNMENT // undefiniert = Half //;
       Groesse: OPTIONAL Schriftgroesse // undefiniert = mittel //;
       Hilfslinie: OPTIONAL POLYLINE WITH (STRAIGHTS) VERTEX LKoord;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END GebaeudeNamePos;
 
@@ -1707,6 +2082,9 @@ Identifikator: OPTIONAL TEXT*12;
       GebaeudeBeschreibung_von: -> Gebaeudeeingang; !! Beziehung 1-mc
       Text: TEXT*100;
       Sprache: Sprachtyp;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT GebaeudeBeschreibung_von, Sprache;
     END GebaeudeBeschreibung;
   END Gebaeudeadressen.
@@ -1754,12 +2132,18 @@ Identifikator: OPTIONAL TEXT*12;
       Mit_Koordinatennetz: (
         ja,     !! mitgeliefert
         nein);  !! zu generieren
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;              
     IDENT NBIdent, Identifikator;
     END PlanLayout;
     TABLE Planbeschriftung =
       Planbeschriftung_von: -> PlanLayout;  !! Beziehung 1-mc
       Beschriftung: TEXT*30;
       Art: Beschriftungsart;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END Planbeschriftung;
     TABLE PlanbeschriftungPos =
@@ -1770,11 +2154,17 @@ Identifikator: OPTIONAL TEXT*12;
       HAli: OPTIONAL HALIGNMENT // undefiniert = Center //;
       VAli: OPTIONAL VALIGNMENT // undefiniert = Half //;
       Groesse: OPTIONAL Schriftgroesse // undefiniert = mittel //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END PlanbeschriftungPos;
     TABLE Koordinatenanschrift =
       Koordinatenanschrift_von: -> PlanLayout;  !! Beziehung 1-mc
       Beschriftung: TEXT*12;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END Koordinatenanschrift;
     TABLE KoordinatenanschriftPos =
@@ -1785,17 +2175,26 @@ Identifikator: OPTIONAL TEXT*12;
       HAli: OPTIONAL HALIGNMENT // undefiniert = Center //;
       VAli: OPTIONAL VALIGNMENT // undefiniert = Half //;
       Groesse: OPTIONAL Schriftgroesse // undefiniert = mittel //;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT KoordinatenanschriftPos_von, Pos;
     END KoordinatenanschriftPos;
     TABLE Linienobjekt =
       Linienobjekt_von: -> PlanLayout;  !! Beziehung 1-mc
       Geometrie: POLYLINE WITH (STRAIGHTS, ARCS) VERTEX LKoord;
       Art: Linientyp;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END Linienobjekt;
     TABLE KoordinatenLinie =
       KoordinatenLinie_von: -> PlanLayout;  !! Beziehung 1-mc
       Geometrie: POLYLINE WITH (STRAIGHTS) VERTEX LKoord;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END KoordinatenLinie;
     TABLE Darstellungsflaeche =
@@ -1805,6 +2204,9 @@ Identifikator: OPTIONAL TEXT*12;
       Auswahlart: (
         vollstaendig,
         teilweise);
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;              
     NO IDENT
     END Darstellungsflaeche;
     TABLE PlanLayoutSymbol =
@@ -1812,6 +2214,9 @@ Identifikator: OPTIONAL TEXT*12;
       Pos: LKoord;
       Ori: OPTIONAL Rotation // undefiniert = 0.0 //;
       Art: Symbolart;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     NO IDENT
     END PlanLayoutSymbol;
     TABLE Netzkreuz =
@@ -1819,6 +2224,9 @@ Identifikator: OPTIONAL TEXT*12;
       Pos: LKoord;
       Ori: OPTIONAL Rotation // undefiniert = 0.0 //;
       Art: Kreuzart;
+      gem_bfs: BFSNr;
+      los: LosNr;
+      lieferdatum: Lieferdatum;            
     IDENT Netzkreuz_von, Pos;
     END Netzkreuz;
   END Planrahmen.

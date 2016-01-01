@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Properties;
+import java.sql.SQLException;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -62,8 +63,6 @@ public class App {
                 init = true;
             }
             
-            
-
             // Read config file and set all parameters.
             InputStream input = new FileInputStream(config);
 
@@ -82,8 +81,8 @@ public class App {
             params.put("modeldir", prop.getProperty("modeldir", "http://www.catais.org/models/"));
             params.put("loglevel", prop.getProperty("loglevel", "info"));
 
-            params.put("dbschemaTmp", prop.getProperty("dbschema", "av_avdpool_tmp"));
-            params.put("modelsTmp", prop.getProperty("models", "DM01AVSO24LV95"));
+            params.put("dbschemaTmp", prop.getProperty("dbschemaTmp", "av_avdpool_tmp"));
+            params.put("modelsTmp", prop.getProperty("modelsTmp", "DM01AVSO24LV95"));
             
             params.put("dbschema", prop.getProperty("dbschema", "av_avdpool_next"));
             params.put("models", prop.getProperty("models", "DM01AVSO24LV95_AVDPOOL"));
@@ -96,18 +95,11 @@ public class App {
             // Now let the party begin...
             PostgresqlDatabase pgObj = new PostgresqlDatabase(params);
 
-            // init final schema
+            // init temporary and final schema
             if (init) {
-                pgObj.initFinalSchema();
+                pgObj.initSchema();
             }
-            
-            // init temporary schema
-            if (init) {
-                pgObj.initTempSchema();
-            }
-            // init auch für tmp und dann immer deleteData?
-            // so müssen die Tabelle nicht für jede Gemeinde erstellt werden.
-
+  
         } catch (ParseException e) {
             logger.error(e.getMessage());
         } catch (FileNotFoundException e) {
@@ -115,8 +107,14 @@ public class App {
         } catch (IOException e) {
             logger.error(e.getMessage());
         } catch (Ili2dbException e) {
+            e.printStackTrace();
             logger.error(e.getMessage());
-        }
+        } catch (ClassNotFoundException e) {
+            logger.error(e.getMessage());
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+        } 
+
 
         logger.info("Stopping at: " + new Date());
     }

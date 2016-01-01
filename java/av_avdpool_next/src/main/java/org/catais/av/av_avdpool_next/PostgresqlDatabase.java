@@ -8,6 +8,11 @@ package org.catais.av.av_avdpool_next;
 import ch.ehi.ili2db.base.Ili2db;
 import ch.ehi.ili2db.base.Ili2dbException;
 import ch.ehi.ili2db.gui.Config;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -35,7 +40,7 @@ public class PostgresqlDatabase {
     // Temporary (=import) database parameters
     String dbschemaTmp = null;
     String modelsTmp = null;
-    
+
     // Final (=target) database parameters
     String dbschema = null;
     String models = null;
@@ -52,28 +57,78 @@ public class PostgresqlDatabase {
         dbpwd = params.get("dbpwd");
         defaultSrsAuth = params.get("defaultSrsAuth");
         defaultSrsCode = params.get("defaultSrsCode");
-        modeldir = params.get("modeldir");        
+        modeldir = params.get("modeldir");
         loglevel = params.get("loglevel");
         dburl = "jdbc:postgresql://" + dbhost + ":" + dbport + "/" + dbdatabase + "?user=" + dbusr + "&password=" + dbpwd;
-             
+
         dbschemaTmp = params.get("dbschemaTmp");
         modelsTmp = params.get("modelsTmp");
 
         dbschema = params.get("dbschema");
         models = params.get("models");
-        
+
         dbusrro = params.get("dbusrro");
         dbpwdro = params.get("dbusrro");
     }
 
-    public void initFinalSchema() throws Ili2dbException {        
+    // initSchema() is not not transactional. It's 'only' an init-
+    // method this shouldn't be a problem since it will be performed rarely.
+    // TODO: Proper exception handling:
+    // There will be no rollback if one of the three tasks fail.
+    // So we can simple abort the whole process if there is an exception 
+    // thrown.
+    // Yes?
+    public void initSchema() throws Ili2dbException, ClassNotFoundException, SQLException {
+        // Create final schema
         Config config = getConfig(this.dbschema, this.models);
         Ili2db.runSchemaImport(config, "");
-    }
-    
-    public void initTempSchema() throws Ili2dbException {
-        Config config = getConfig(this.dbschemaTmp, this.modelsTmp);
+
+        // Grant schema and tables to public user.
+        grantSchemaTables();
+        
+        // Create temporary schema
+        config = getConfig(this.dbschemaTmp, this.modelsTmp);
         Ili2db.runSchemaImport(config, "");
+    }
+
+    private void grantSchemaTables() throws ClassNotFoundException, SQLException {
+        Class.forName("org.postgresql.Driver");
+
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
+
+        String sql = null;
+        
+        sql = "GRANT USAGE ON SCHEMA " + dbschema + " TO " + dbusrro + ";\n"
+                + "GRANT SELECT ON ALL TABLES IN SCHEMA " + dbschema + " TO " + dbusrro + ";";
+        
+        try {
+            con = DriverManager.getConnection(dburl);
+            st = con.createStatement();
+            int res = st.executeUpdate(sql);
+            
+            logger.debug("Grant usage/select update result: " + res);
+
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (st != null) {
+                    st.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException e) {
+                logger.error(e.getMessage());
+            }
+        }   
     }
 
     private Config getConfig(String dbschema, String models) {
