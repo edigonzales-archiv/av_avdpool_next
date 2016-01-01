@@ -45,6 +45,7 @@ public class App {
         options.addOption(null, "config", true, "config.properties file");
         options.addOption(null, "init", false, "create database schema");
         options.addOption(null, "download", false, "download itf from infogrips server");
+        options.addOption(null, "import", false, "import itf to database");
 
         logger.debug(options);
 
@@ -60,14 +61,19 @@ public class App {
                 config = cmd.getOptionValue("config");
             }
 
-            boolean init = false;
+            boolean doInit = false;
             if (cmd.hasOption("init")) {
-                init = true;
+                doInit = true;
             }
             
-            boolean download = false;
+            boolean doDownload = false;
             if (cmd.hasOption("download")) {
-                download = true;
+                doDownload = true;
+            }
+            
+            boolean doImport = false;
+            if (cmd.hasOption("download")) {
+                doImport = true;
             }
             
             // Read config file and set all parameters.
@@ -109,13 +115,13 @@ public class App {
             PostgresqlDatabase pgObj = new PostgresqlDatabase(params);
 
             // init temporary and final schema
-            if (init) {
+            if (doInit) {
                 pgObj.initSchema();
             }
             
             // download itf from infogrips ftp server
             ArrayList<String> itfFiles = null;
-            if (download) {
+            if (doDownload) {
                 InfogripsFtp ftpObj = new InfogripsFtp(params);
                 itfFiles = ftpObj.download();
             }
@@ -124,8 +130,12 @@ public class App {
             // Or the ones in 'itfFiles'?
             // First attempt: all files in ftp download dir. In this case
             // we can import w/o downloading files first.
-            
-            
+            // We can also check if at least we imported all the files from
+            // itfFiles at the end (if itfFils is not null and/or we 
+            // downloaded (--download is set)).
+            if (doImport) {
+                
+            }
   
         } catch (ParseException e) {
             logger.error(e.getMessage());

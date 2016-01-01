@@ -16,6 +16,7 @@ import java.sql.Statement;
 import java.util.HashMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.catais.av.av_avdpool_next.ili2db.Ili2dbConfig;
 
 /**
  *
@@ -30,8 +31,6 @@ public class PostgresqlDatabase {
     String dbdatabase = null;
     String dbusr = null;
     String dbpwd = null;
-    String defaultSrsAuth = null;
-    String defaultSrsCode = null;
     String modeldir = null;
     String loglevel = null;
     String dburl = null;
@@ -48,15 +47,16 @@ public class PostgresqlDatabase {
     String dbusrro = null;
     String dbpwdro = null;
 
+    HashMap<String,String> params = null;
+    
     public PostgresqlDatabase(HashMap<String, String> params) {
+        this.params = params;
+        
         dbhost = params.get("dbhost");
         dbport = params.get("dbport");
         dbdatabase = params.get("dbdatabase");
         dbusr = params.get("dbusr");
         dbpwd = params.get("dbpwd");
-        defaultSrsAuth = params.get("defaultSrsAuth");
-        defaultSrsCode = params.get("defaultSrsCode");
-        modeldir = params.get("modeldir");
         loglevel = params.get("loglevel");
         dburl = "jdbc:postgresql://" + dbhost + ":" + dbport + "/" + dbdatabase + "?user=" + dbusr + "&password=" + dbpwd;
 
@@ -79,14 +79,15 @@ public class PostgresqlDatabase {
     // Yes?
     public void initSchema() throws Ili2dbException, ClassNotFoundException, SQLException {
         // Create final schema
-        Config config = getConfig(this.dbschema, this.models);
+        Ili2dbConfig ili2dbConfig = new Ili2dbConfig(params);
+        Config config = ili2dbConfig.getConfig(this.dbschema, this.models);
         Ili2db.runSchemaImport(config, "");
 
         // Grant schema and tables to public user.
         grantSchemaTables();
         
         // Create temporary schema
-        config = getConfig(this.dbschemaTmp, this.modelsTmp);
+        config = ili2dbConfig.getConfig(this.dbschemaTmp, this.modelsTmp);
         Ili2db.runSchemaImport(config, "");
     }
 
@@ -128,40 +129,5 @@ public class PostgresqlDatabase {
                 logger.error(e.getMessage());
             }
         }   
-    }
-
-    private Config getConfig(String dbschema, String models) {
-        Config config = new Config();
-
-        config.setDbhost(dbhost);
-        config.setDbdatabase(dbdatabase);
-        config.setDbport(dbport);
-        config.setDbusr(dbusr);
-        config.setDbpwd(dbpwd);
-        config.setDburl(dburl);
-        config.setDbschema(dbschema);
-        config.setModels(models);
-        config.setModeldir(modeldir);
-
-        config.setGeometryConverter(ch.ehi.ili2pg.converter.PostgisColumnConverter.class.getName());
-        config.setDdlGenerator(ch.ehi.sqlgen.generator_impl.jdbc.GeneratorPostgresql.class.getName());
-        config.setJdbcDriver("org.postgresql.Driver");
-        config.setIdGenerator(ch.ehi.ili2pg.PgSequenceBasedIdGen.class.getName());
-        config.setUuidDefaultValue("uuid_generate_v4()");
-
-        config.setNameOptimization("topic");
-        config.setMaxSqlNameLength("60");
-        config.setStrokeArcs("enable");
-
-        config.setSqlNull("enable"); // be less restrictive
-        config.setValue("ch.ehi.sqlgen.createGeomIndex", "True");
-        config.setTidHandling(config.TID_HANDLING_PROPERTY);
-        config.setCreateFkIdx(config.CREATE_FKIDX_YES);
-        config.setCreateEnumDefs(config.CREATE_ENUM_DEFS_MULTI);
-
-        config.setDefaultSrsAuthority(defaultSrsAuth);
-        config.setDefaultSrsCode(defaultSrsCode);
-
-        return config;
     }
 }
