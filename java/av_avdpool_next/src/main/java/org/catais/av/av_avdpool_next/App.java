@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Properties;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -43,6 +44,7 @@ public class App {
         Options options = new Options();
         options.addOption(null, "config", true, "config.properties file");
         options.addOption(null, "init", false, "create database schema");
+        options.addOption(null, "download", false, "download itf from infogrips server");
 
         logger.debug(options);
 
@@ -61,6 +63,11 @@ public class App {
             boolean init = false;
             if (cmd.hasOption("init")) {
                 init = true;
+            }
+            
+            boolean download = false;
+            if (cmd.hasOption("download")) {
+                download = true;
             }
             
             // Read config file and set all parameters.
@@ -90,6 +97,12 @@ public class App {
             params.put("dbusrro", prop.getProperty("dbusrro", "mspublic"));
             params.put("dbpwdro", prop.getProperty("dbpwdro", "mspublic"));
             
+            params.put("ftphost", prop.getProperty("ftphost").trim());
+            params.put("ftpusr", prop.getProperty("ftpusr").trim());
+            params.put("ftppwd", prop.getProperty("ftppwd").trim());
+            params.put("ftpWorkingDir", prop.getProperty("ftpWorkingDir").trim());
+            params.put("ftpDownloadDir", prop.getProperty("ftpDownloadDir").trim());
+
             logger.debug("Params: " + params);
 
             // Now let the party begin...
@@ -99,12 +112,27 @@ public class App {
             if (init) {
                 pgObj.initSchema();
             }
+            
+            // download itf from infogrips ftp server
+            ArrayList<String> itfFiles = null;
+            if (download) {
+                InfogripsFtp ftpObj = new InfogripsFtp(params);
+                itfFiles = ftpObj.download();
+            }
+            
+            // TODO: Do we want to import all files in the ftp download dir?
+            // Or the ones in 'itfFiles'?
+            // First attempt: all files in ftp download dir. In this case
+            // we can import w/o downloading files first.
+            
+            
   
         } catch (ParseException e) {
             logger.error(e.getMessage());
         } catch (FileNotFoundException e) {
             logger.error(e.getMessage());
         } catch (IOException e) {
+            e.printStackTrace();
             logger.error(e.getMessage());
         } catch (Ili2dbException e) {
             e.printStackTrace();

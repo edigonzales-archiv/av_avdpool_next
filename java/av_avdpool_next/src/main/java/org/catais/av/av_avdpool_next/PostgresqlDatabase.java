@@ -22,7 +22,6 @@ import org.apache.logging.log4j.Logger;
  * @author stefan
  */
 public class PostgresqlDatabase {
-
     static final Logger logger = LogManager.getLogger(PostgresqlDatabase.class.getName());
 
     // Shared database parameters (tmp=import && final=target schema)
