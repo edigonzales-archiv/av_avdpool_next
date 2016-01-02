@@ -156,7 +156,23 @@ public class PostgresqlDatabase {
                     int lot = Integer.parseInt(lotStr);
 
                     // Delete data of community and lot in the final schema.
-                    deleteCommunity(fosnr, lot);
+                    // TODO: muss irgendwie mit insert into in eine transaktion...
+                    // evenutell tableNames Liste ausserhalb vorgängig erzeugen 
+                    // dann löschen und inserten in einer Transaktion.
+                    // attribute auch gleich mitspeichern in liste?
+                    //deleteCommunity(fosnr, lot);
+//                    ArrayList<String> tableNames = getDataTables();
+                    
+//                    logger.debug(tableNames);
+
+                    
+                    
+                    updateCommunity(fosnr, lot, deliveryDate);
+                    
+                    
+                    
+                    
+                    
 
                 } catch (StringIndexOutOfBoundsException | NumberFormatException e) {
                     e.printStackTrace();
@@ -179,20 +195,124 @@ public class PostgresqlDatabase {
 
     }
 
-    private void deleteCommunity(int fosnr, int lot) throws Exception {
-        // Get all tables of final schema we have to deal with.
-        ArrayList<String> tables = getDataTables();
+    private void updateCommunity(int fosnr, int lot, Date deliveryDate) throws Exception {
+        // Get all table names and all attributes of a table from the 
+        // final schema we have to deal with.
+        HashMap<String, String[]> tables = getDataTablesInformation();
 
         if (tables.isEmpty()) {
-            throw new Exception("Error getting data tables from database.");
+            throw new Exception("Error getting data tables information from database.\nReturned list is empty.");
+        }
+
+        try {
+            Class.forName("org.postgresql.Driver");
+
+            Connection con = null;
+            Statement st = null;
+            ResultSet rs = null;
+            int res;
+
+            try {
+                con = DriverManager.getConnection(dburl);
+                con.setAutoCommit(false);
+                
+                for (String tableName : tables.keySet()) {
+                    logger.debug(tableName + " :: " + tables.get(tableName));
+                    
+                    st = con.createStatement();
+                    String sql = null;
+                    
+                    // Delete data
+                    sql = "\n"
+                            + "DELETE FROM " + dbschema + "." + tableName + "\n"
+                            + "WHERE gem_bfs = " + fosnr + "\n"
+                            + "AND los = " + lot + ";";
+
+                    logger.debug(sql);
+                    
+                    res = st.executeUpdate(sql);
+                           
+                    // Copy data from temporay tables to final tables. 
+                    String[] attributes = tables.get(tableName);
+                    
+                    // We need two different strings with the attributes.
+                    // One with all the attributes (= target)
+                    // and one where we substitute 'gem_bfs', 'los' and
+                    // 'lieferdatum'.
+                    String attrSourceStr = new String();
+                    String attrTargetStr = new String();
+                    
+                    for (int i = 0; i < attributes.length; i++) {
+                        String attrName = attributes[i];
+                        
+                        if (attrName.equalsIgnoreCase("gem_bfs")) {
+                            attrSourceStr += fosnr;
+                        } else if (attrName.equalsIgnoreCase("los")) {
+                            attrSourceStr += lot;
+                        } else if (attrName.equalsIgnoreCase("lieferdatum")) {
+                            java.sql.Timestamp sqlDeliveryDate = new java.sql.Timestamp((deliveryDate).getTime());
+                            attrSourceStr += "'" + sqlDeliveryDate + "'";
+                        } else {
+                            attrSourceStr += attributes[i];
+                        }
+
+                        attrTargetStr += attributes[i];
+
+                        if (i != attributes.length - 1) {
+                            attrSourceStr += ", ";
+                            attrTargetStr += ", ";
+                        }
+                    }
+                    
+                    sql = "\n"
+                            + "INSERT INTO " + dbschema + "." + tableName + " "
+                            + "("
+                            + attrTargetStr
+                            + ")\n"
+                            + "SELECT "
+                            + attrSourceStr + "\n"
+                            + "FROM " + dbschemaTmp + "." + tableName + ";";                   
+                    
+                    logger.debug(sql);
+                    
+                    res = st.executeUpdate(sql);
+                }
+                
+                // Commit delete and insert into in one transaction for all
+                // tables for one community.
+                con.commit();
+                
+            } catch (SQLException e) {
+                e.printStackTrace();
+                logger.error(e.getMessage());
+            } finally {
+                try {
+                    if (rs != null) {
+                        rs.close();
+                    }
+                    if (st != null) {
+                        st.close();
+                    }
+                    if (con != null) {
+                        con.close();
+                    }
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    logger.error(e.getMessage());
+                }
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
         }
 
     }
 
-    private ArrayList getDataTables() {
-        ArrayList<String> tables = new ArrayList<>();
-        try {
+    private HashMap getDataTablesInformation() {
+        HashMap<String, String[]> tables = new HashMap<String, String[]>();
 
+        try {
             Class.forName("org.postgresql.Driver");
 
             Connection con = null;
@@ -200,34 +320,47 @@ public class PostgresqlDatabase {
             ResultSet rs = null;
 
             String sql = null;
-            
+
             // This query returns all tables that have the three additional
             // attributes (gem_bfs, los, lieferdatum). -> These are the tables
             // we need to deal with.
             sql = "\n"
-                    + "SELECT table_name\n"
+                    + "SELECT tabs.table_name, attr.attributes\n"
                     + "FROM\n"
                     + "(\n"
-                    + " SELECT count(col.column_name), col.table_name\n"
-                    + " FROM information_schema.tables as tab, information_schema.columns as col\n"
-                    + " WHERE tab.table_schema = '"+ dbschema +"'\n"
-                    + " AND col.table_schema = '"+ dbschema +"'\n"
-                    + " AND tab.table_name = col.table_name\n"
-                    + " AND col.column_name IN ('gem_bfs', 'los', 'lieferdatum')\n"
-                    + " GROUP BY col.table_name\n"
-                    + ") as t\n"
-                    + "WHERE count = 3;";
-                    
+                    + " SELECT table_name\n"
+                    + " FROM\n"
+                    + " (\n"
+                    + "  SELECT count(col.column_name), col.table_name\n"
+                    + "  FROM information_schema.tables as tab, information_schema.columns as col\n"
+                    + "  WHERE tab.table_schema = '" + dbschema + "'\n"
+                    + "  AND col.table_schema = '" + dbschema + "'\n"
+                    + "  AND tab.table_name = col.table_name\n"
+                    + "  AND col.column_name IN ('gem_bfs', 'los', 'lieferdatum')\n"
+                    + "  GROUP BY col.table_name\n"
+                    + " ) as t\n"
+                    + " WHERE count = 3\n"
+                    + ") as tabs,\n"
+                    + "(\n"
+                    + " SELECT table_name, array_agg(column_name::TEXT) as attributes\n"
+                    + " FROM information_schema.columns\n"
+                    + " WHERE table_schema = '" + dbschema + "'\n"
+                    + " GROUP BY table_name\n"
+                    + ") as attr\n"
+                    + "WHERE tabs.table_name = attr.table_name;";
+
             logger.debug("Data tables query: " + sql);
-                   
+
             try {
                 con = DriverManager.getConnection(dburl);
                 st = con.createStatement();
                 rs = st.executeQuery(sql);
 
                 while (rs.next()) {
-                    logger.debug(rs.getString("table_name"));
-                    tables.add(rs.getString("table_name"));
+                    String table_name  = rs.getString("table_name");
+                    String[] attributes = (String[]) rs.getArray("attributes").getArray();
+                    
+                    tables.put(table_name, attributes);
                 }
 
             } catch (SQLException e) {
