@@ -72,7 +72,7 @@ public class App {
             }
             
             boolean doImport = false;
-            if (cmd.hasOption("download")) {
+            if (cmd.hasOption("import")) {
                 doImport = true;
             }
             
@@ -120,10 +120,10 @@ public class App {
             }
             
             // download itf from infogrips ftp server
-            ArrayList<String> itfFiles = null;
+            ArrayList<String> zipFileNames = null;
             if (doDownload) {
                 InfogripsFtp ftpObj = new InfogripsFtp(params);
-                itfFiles = ftpObj.download();
+                zipFileNames = ftpObj.download();
             }
             
             // TODO: Do we want to import all files in the ftp download dir?
@@ -134,7 +134,7 @@ public class App {
             // itfFiles at the end (if itfFils is not null and/or we 
             // downloaded (--download is set)).
             if (doImport) {
-                
+                pgObj.importItf();
             }
   
         } catch (ParseException e) {

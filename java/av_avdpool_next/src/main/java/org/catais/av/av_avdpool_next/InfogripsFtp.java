@@ -11,6 +11,7 @@ import java.io.OutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import org.apache.commons.net.ftp.FTP;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.commons.net.ftp.FTPClient;
@@ -45,12 +46,20 @@ public class InfogripsFtp {
         public ArrayList download() throws IOException {
             FTPClient ftpClient = new FTPClient();
             ftpClient.enterLocalPassiveMode();
-            ftpClient.connect(ftphost);
 
+
+            ftpClient.connect(ftphost);
+           
             if (!ftpClient.login(ftpusr, ftppwd)) {
                 ftpClient.disconnect();
                 throw new IOException("Could not login to ftp server.");
             }
+            
+            if (!ftpClient.setFileType(FTP.BINARY_FILE_TYPE)) {
+                ftpClient.disconnect();                
+                throw new IOException("Could not set binary file type."); 
+            }            
+                        
                   
             String[] ftpFileList = ftpClient.listNames(ftpWorkingDir);
             for (String ftpFileName : ftpFileList) {
@@ -60,9 +69,10 @@ public class InfogripsFtp {
                 // Ist output.close() nicht mehr nötig?
                 String downloadedFileName = ftpDownloadDir + File.separatorChar + ftpFileName;
                 try (OutputStream output = new FileOutputStream(downloadedFileName)) {
-//                    ftpClient.retrieveFile(ftpWorkingDir + File.separatorChar + ftpFileName, output);
-                    files.add(downloadedFileName);
+                    ftpClient.retrieveFile(ftpWorkingDir + File.separatorChar + ftpFileName, output);
+                    files.add(downloadedFileName);                    
                 }
+                break;
             }
             
             ftpClient.disconnect();
