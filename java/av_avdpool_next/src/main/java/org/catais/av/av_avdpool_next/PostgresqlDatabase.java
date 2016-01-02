@@ -28,6 +28,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.commons.io.FilenameUtils;
 import org.catais.av.av_avdpool_next.ili2db.Ili2dbConfig;
 
 /**
@@ -140,6 +141,9 @@ public class PostgresqlDatabase {
                     if (itfFile != null) {
                         itfFileNames.add(itfFile.getAbsolutePath());
                     }
+                    
+                    // TODO: Some check if unzipped file has ".itf/ITF" 
+                    // extension.
 
                     // Now import the itf into temporary schema.
                     config.setXtffile(itfFile.getAbsolutePath());
@@ -156,43 +160,28 @@ public class PostgresqlDatabase {
                     int lot = Integer.parseInt(lotStr);
 
                     // Delete data of community and lot in the final schema.
-                    // TODO: muss irgendwie mit insert into in eine transaktion...
-                    // evenutell tableNames Liste ausserhalb vorgängig erzeugen 
-                    // dann löschen und inserten in einer Transaktion.
-                    // attribute auch gleich mitspeichern in liste?
-                    //deleteCommunity(fosnr, lot);
-//                    ArrayList<String> tableNames = getDataTables();
-                    
-//                    logger.debug(tableNames);
-
-                    
-                    
-                    updateCommunity(fosnr, lot, deliveryDate);
-                    
-                    
-                    
-                    
-                    
+                    // TODO: Do we need some rollback for temporary tables import
+                    // when updating goes wrong?
+                    // No: 'updateCommunity' is safe. We will just import the next
+                    // one and will find some errors in the log file.
+                    //updateCommunity(fosnr, lot, deliveryDate);
 
                 } catch (StringIndexOutOfBoundsException | NumberFormatException e) {
                     e.printStackTrace();
                     logger.error(e.getMessage());
-                    logger.error("Error while importing into temporary schema.");
+                    logger.error("Error while importing data.");
                     logger.error("File name is not valid: " + entry.getFileName().toString());
                 } catch (Exception e) {
 //                } catch (Ili2dbException e) {
                     e.printStackTrace();
                     logger.error(e.getMessage());
-                    logger.error("???Error while importing into temporary schema.");
+                    logger.error("Error while importing data.");
                 }
-
             }
-
         } catch (IOException e) {
             e.printStackTrace();
             logger.error(e.getMessage());
         }
-
     }
 
     private void updateCommunity(int fosnr, int lot, Date deliveryDate) throws Exception {
@@ -278,7 +267,7 @@ public class PostgresqlDatabase {
                     res = st.executeUpdate(sql);
                 }
                 
-                // Commit delete and insert into in one transaction for all
+                // Commit 'delete' and 'insert into' in one transaction for all
                 // tables for one community.
                 con.commit();
                 
@@ -405,6 +394,10 @@ public class PostgresqlDatabase {
             ZipEntry ze = zis.getNextEntry();
             while (ze != null) {
                 String fileName = ze.getName();
+                
+                // Hier: itf ext. check.
+                logger.debug(FilenameUtils.getExtension(fileName));
+                
                 // We write the unzipped file (=itf) in the same directory.
                 newFile = new File(zippedFile.getParent().toString() + File.separatorChar + fileName);
 
