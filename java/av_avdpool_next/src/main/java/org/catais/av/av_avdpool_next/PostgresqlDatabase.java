@@ -134,7 +134,22 @@ public class PostgresqlDatabase {
             for (Path entry : stream) {
                 try {
                     logger.debug("Importing file: " + entry);
+                    // Get fosnr (=gem_bfs) and lot (=los) from file name.
+                    // Exception will be thrown if it is not named correctly.
+                    String fosnrStr = entry.getFileName().toString().substring(0, 4);
+                    String lotStr = entry.getFileName().toString().substring(4, 6);
 
+                    int fosnr = Integer.parseInt(fosnrStr);
+                    int lot = Integer.parseInt(lotStr);
+                    
+                    // Check if it is LV95.
+                    String lv95 = entry.getFileName().toString().substring(7, 11);
+                    if (lv95.equalsIgnoreCase("lv95")) {
+                        logger.error("No lv95 file: " + entry.getFileName().toString());
+                        logger.error("Will continue with next file.");
+                        continue;
+                    }
+                    
                     // We need to unzip the files first.
                     File itfFile = unzipItf(entry.toAbsolutePath());
 
@@ -151,13 +166,6 @@ public class PostgresqlDatabase {
 
                     // Copy data into final schema and update additional
                     // attributes. 
-                    // Delete data first (WHERE: gem_bfs, los, lieferdatum)
-                    // Get fosnr (=gem_bfs) and lot (=los) from file name.
-                    String fosnrStr = entry.getFileName().toString().substring(0, 4);
-                    String lotStr = entry.getFileName().toString().substring(4, 6);
-
-                    int fosnr = Integer.parseInt(fosnrStr);
-                    int lot = Integer.parseInt(lotStr);
 
                     // Delete data of community and lot in the final schema.
                     // TODO: Do we need some rollback for temporary tables import
@@ -171,11 +179,13 @@ public class PostgresqlDatabase {
                     logger.error(e.getMessage());
                     logger.error("Error while importing data.");
                     logger.error("File name is not valid: " + entry.getFileName().toString());
+                    logger.error("Will continue with next file.");                    
                 } catch (Exception e) {
 //                } catch (Ili2dbException e) {
                     e.printStackTrace();
                     logger.error(e.getMessage());
-                    logger.error("Error while importing data.");
+                    logger.error("Error while importing data: " + entry.getFileName().toString());
+                    logger.error("Will continue with next file.");
                 }
             }
         } catch (IOException e) {
@@ -395,8 +405,12 @@ public class PostgresqlDatabase {
             while (ze != null) {
                 String fileName = ze.getName();
                 
-                // Hier: itf ext. check.
-                logger.debug(FilenameUtils.getExtension(fileName));
+                // Check if it is an itf/ITF file. 
+                String fileExtension = FilenameUtils.getExtension(fileName);
+                if (!fileExtension.equalsIgnoreCase("itf")) {
+                    logger.error("No itf found in zipped file: " + zippedFile.toString());
+                    continue;
+                }
                 
                 // We write the unzipped file (=itf) in the same directory.
                 newFile = new File(zippedFile.getParent().toString() + File.separatorChar + fileName);
