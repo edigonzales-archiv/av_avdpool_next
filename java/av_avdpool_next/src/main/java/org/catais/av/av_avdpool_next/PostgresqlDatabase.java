@@ -86,7 +86,7 @@ public class PostgresqlDatabase {
 
     // initSchema() is not not transactional. It's 'only' an init-
     // method this shouldn't be a problem since it will be performed rarely.
-    // TODO: Proper exception handling:
+    // TODO: Proper exception handling (for the whole process):
     // There will be no rollback if one of the three tasks fail.
     // So we can simple abort the whole process if there is an exception 
     // thrown.
@@ -95,6 +95,11 @@ public class PostgresqlDatabase {
         // Create final schema
         Ili2dbConfig ili2dbConfig = new Ili2dbConfig(params);
         Config config = ili2dbConfig.getConfig(this.dbschema, this.models);
+        // We don't need a sequenced based t_id in the final tables.
+        // The t_id from the temporary tables can and will be used.
+        // These temporary t_id are sequenced based.
+        // TODO: Someday the sequence reaches its maximum. What will happen?
+        config.setIdGenerator(ch.ehi.ili2db.base.TableBasedIdGen.class.getName());
         Ili2db.runSchemaImport(config, "");
 
         // Grant schema and tables to public user.
@@ -167,7 +172,6 @@ public class PostgresqlDatabase {
                     // Copy data into final schema and update additional
                     // attributes. 
 
-                    // Delete data of community and lot in the final schema.
                     // TODO: Do we need some rollback for temporary tables import
                     // when updating goes wrong?
                     // No: 'updateCommunity' is safe. We will just import the next
