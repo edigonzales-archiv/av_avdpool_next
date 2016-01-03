@@ -110,14 +110,19 @@ public class PostgresqlDatabase {
         Ili2db.runSchemaImport(config, "");
     }
 
-    public void importItf() {
+    public ArrayList importItf() {
         // Now and here we set the date of delivery which will be used for all
         // files we import.
         Date deliveryDate = new Date();
 
+        // Some file lists
+        ArrayList<String> itfFileNames = new ArrayList<>();
+        ArrayList<String> failedImports = new ArrayList<>();
+
         // Get an ili2db configuration.
-        // Delete all data (in the temporary) schema.
-        // .setConfigReadFromDb() is necessary since the schema/tables exist.
+        // Delete all data (in the temporary) schema with .setDeleteMode()
+        // (--deleteData).
+        // .setConfigReadFromDb() is necessary since the schema/tables exists.
         Ili2dbConfig ili2dbConfig = new Ili2dbConfig(params);
         Config config = ili2dbConfig.getConfig(this.dbschemaTmp, this.modelsTmp);
         config.setDeleteMode(Config.DELETE_DATA);
@@ -134,7 +139,6 @@ public class PostgresqlDatabase {
 
         // Loop through the directory with the zip files, unzip and import
         // them.
-        ArrayList<String> itfFileNames = new ArrayList<>();
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(importDirPath, "*.zip")) {
             for (Path entry : stream) {
                 try {
@@ -146,47 +150,45 @@ public class PostgresqlDatabase {
 
                     int fosnr = Integer.parseInt(fosnrStr);
                     int lot = Integer.parseInt(lotStr);
-                    
+
                     // Check if it is LV95.
                     String lv95 = entry.getFileName().toString().substring(7, 11);
-                    if (lv95.equalsIgnoreCase("lv95")) {
+                    if (!lv95.equalsIgnoreCase("lv95")) {
                         logger.error("No lv95 file: " + entry.getFileName().toString());
                         logger.error("Will continue with next file.");
                         continue;
                     }
-                    
+
                     // We need to unzip the files first.
                     File itfFile = unzipItf(entry.toAbsolutePath());
 
                     if (itfFile != null) {
                         itfFileNames.add(itfFile.getAbsolutePath());
                     }
-                    
-                    // TODO: Some check if unzipped file has ".itf/ITF" 
-                    // extension.
 
                     // Now import the itf into temporary schema.
                     config.setXtffile(itfFile.getAbsolutePath());
-//                    Ili2db.runImport(config, "");
+                    Ili2db.runImport(config, "");
 
                     // Copy data into final schema and update additional
                     // attributes. 
-
                     // TODO: Do we need some rollback for temporary tables import
                     // when updating goes wrong?
                     // No: 'updateCommunity' is safe. We will just import the next
                     // one and will find some errors in the log file.
-                    //updateCommunity(fosnr, lot, deliveryDate);
+                    updateCommunity(fosnr, lot, deliveryDate);
 
                 } catch (StringIndexOutOfBoundsException | NumberFormatException e) {
                     e.printStackTrace();
+                    failedImports.add(entry.toAbsolutePath().toString());
                     logger.error(e.getMessage());
                     logger.error("Error while importing data.");
                     logger.error("File name is not valid: " + entry.getFileName().toString());
-                    logger.error("Will continue with next file.");                    
+                    logger.error("Will continue with next file.");
                 } catch (Exception e) {
 //                } catch (Ili2dbException e) {
                     e.printStackTrace();
+                    failedImports.add(entry.toAbsolutePath().toString());
                     logger.error(e.getMessage());
                     logger.error("Error while importing data: " + entry.getFileName().toString());
                     logger.error("Will continue with next file.");
@@ -195,10 +197,13 @@ public class PostgresqlDatabase {
         } catch (IOException e) {
             e.printStackTrace();
             logger.error(e.getMessage());
+            logger.error("All imports failed. Cannot read directory: " + importDirPath);
         }
+
+        return failedImports;
     }
 
-    private void updateCommunity(int fosnr, int lot, Date deliveryDate) throws Exception {
+    private void updateCommunity(int fosnr, int lot, Date deliveryDate) throws SQLException, Exception {
         // Get all table names and all attributes of a table from the 
         // final schema we have to deal with.
         HashMap<String, String[]> tables = getDataTablesInformation();
@@ -207,109 +212,105 @@ public class PostgresqlDatabase {
             throw new Exception("Error getting data tables information from database.\nReturned list is empty.");
         }
 
+        Class.forName("org.postgresql.Driver");
+
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
+        int res;
+
         try {
-            Class.forName("org.postgresql.Driver");
+            con = DriverManager.getConnection(dburl);
+            con.setAutoCommit(false);
 
-            Connection con = null;
-            Statement st = null;
-            ResultSet rs = null;
-            int res;
+            for (String tableName : tables.keySet()) {
+                logger.trace(tableName + " :: " + tables.get(tableName));
 
-            try {
-                con = DriverManager.getConnection(dburl);
-                con.setAutoCommit(false);
-                
-                for (String tableName : tables.keySet()) {
-                    logger.debug(tableName + " :: " + tables.get(tableName));
-                    
-                    st = con.createStatement();
-                    String sql = null;
-                    
-                    // Delete data
-                    sql = "\n"
-                            + "DELETE FROM " + dbschema + "." + tableName + "\n"
-                            + "WHERE gem_bfs = " + fosnr + "\n"
-                            + "AND los = " + lot + ";";
+                st = con.createStatement();
+                String sql = null;
 
-                    logger.debug(sql);
-                    
-                    res = st.executeUpdate(sql);
-                           
-                    // Copy data from temporay tables to final tables. 
-                    String[] attributes = tables.get(tableName);
-                    
-                    // We need two different strings with the attributes.
-                    // One with all the attributes (= target)
-                    // and one where we substitute 'gem_bfs', 'los' and
-                    // 'lieferdatum'.
-                    String attrSourceStr = new String();
-                    String attrTargetStr = new String();
-                    
-                    for (int i = 0; i < attributes.length; i++) {
-                        String attrName = attributes[i];
-                        
-                        if (attrName.equalsIgnoreCase("gem_bfs")) {
-                            attrSourceStr += fosnr;
-                        } else if (attrName.equalsIgnoreCase("los")) {
-                            attrSourceStr += lot;
-                        } else if (attrName.equalsIgnoreCase("lieferdatum")) {
-                            java.sql.Timestamp sqlDeliveryDate = new java.sql.Timestamp((deliveryDate).getTime());
-                            attrSourceStr += "'" + sqlDeliveryDate + "'";
-                        } else {
-                            attrSourceStr += attributes[i];
-                        }
+                // Delete data
+                sql = "\n"
+                        + "DELETE FROM " + dbschema + "." + tableName + "\n"
+                        + "WHERE gem_bfs = " + fosnr + "\n"
+                        + "AND los = " + lot + ";";
 
-                        attrTargetStr += attributes[i];
+                logger.trace(sql);
 
-                        if (i != attributes.length - 1) {
-                            attrSourceStr += ", ";
-                            attrTargetStr += ", ";
-                        }
+                res = st.executeUpdate(sql);
+
+                // Copy data from temporay tables to final tables. 
+                String[] attributes = tables.get(tableName);
+
+                // We need two different strings with the attributes.
+                // One with all the attributes (= target)
+                // and one where we substitute 'gem_bfs', 'los' and
+                // 'lieferdatum'.
+                String attrSourceStr = new String();
+                String attrTargetStr = new String();
+
+                for (int i = 0; i < attributes.length; i++) {
+                    String attrName = attributes[i];
+
+                    if (attrName.equalsIgnoreCase("gem_bfs")) {
+                        attrSourceStr += fosnr;
+                    } else if (attrName.equalsIgnoreCase("los")) {
+                        attrSourceStr += lot;
+                    } else if (attrName.equalsIgnoreCase("lieferdatum")) {
+                        java.sql.Timestamp sqlDeliveryDate = new java.sql.Timestamp((deliveryDate).getTime());
+                        attrSourceStr += "'" + sqlDeliveryDate + "'";
+                    } else {
+                        attrSourceStr += attributes[i];
                     }
-                    
-                    sql = "\n"
-                            + "INSERT INTO " + dbschema + "." + tableName + " "
-                            + "("
-                            + attrTargetStr
-                            + ")\n"
-                            + "SELECT "
-                            + attrSourceStr + "\n"
-                            + "FROM " + dbschemaTmp + "." + tableName + ";";                   
-                    
-                    logger.debug(sql);
-                    
-                    res = st.executeUpdate(sql);
+
+                    attrTargetStr += attributes[i];
+
+                    if (i != attributes.length - 1) {
+                        attrSourceStr += ", ";
+                        attrTargetStr += ", ";
+                    }
                 }
-                
-                // Commit 'delete' and 'insert into' in one transaction for all
-                // tables for one community.
-                con.commit();
-                
+
+                sql = "\n"
+                        + "INSERT INTO " + dbschema + "." + tableName + " "
+                        + "("
+                        + attrTargetStr
+                        + ")\n"
+                        + "SELECT "
+                        + attrSourceStr + "\n"
+                        + "FROM " + dbschemaTmp + "." + tableName + ";";
+
+                logger.trace(sql);
+
+                res = st.executeUpdate(sql);
+            }
+
+            // Commit 'delete' and 'insert into' in one transaction for all
+            // tables for one community.
+            con.commit();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            throw new SQLException(e.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (st != null) {
+                    st.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
             } catch (SQLException e) {
                 e.printStackTrace();
                 logger.error(e.getMessage());
-            } finally {
-                try {
-                    if (rs != null) {
-                        rs.close();
-                    }
-                    if (st != null) {
-                        st.close();
-                    }
-                    if (con != null) {
-                        con.close();
-                    }
-
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                    logger.error(e.getMessage());
-                }
+                throw new SQLException(e.getMessage());            
             }
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            logger.error(e.getMessage());
         }
-
     }
 
     private HashMap getDataTablesInformation() {
@@ -352,7 +353,7 @@ public class PostgresqlDatabase {
                     + ") as attr\n"
                     + "WHERE tabs.table_name = attr.table_name;";
 
-            logger.debug("Data tables query: " + sql);
+            logger.trace("Data tables query: " + sql);
 
             try {
                 con = DriverManager.getConnection(dburl);
@@ -360,9 +361,9 @@ public class PostgresqlDatabase {
                 rs = st.executeQuery(sql);
 
                 while (rs.next()) {
-                    String table_name  = rs.getString("table_name");
+                    String table_name = rs.getString("table_name");
                     String[] attributes = (String[]) rs.getArray("attributes").getArray();
-                    
+
                     tables.put(table_name, attributes);
                 }
 
@@ -408,14 +409,14 @@ public class PostgresqlDatabase {
             ZipEntry ze = zis.getNextEntry();
             while (ze != null) {
                 String fileName = ze.getName();
-                
+
                 // Check if it is an itf/ITF file. 
                 String fileExtension = FilenameUtils.getExtension(fileName);
                 if (!fileExtension.equalsIgnoreCase("itf")) {
                     logger.error("No itf found in zipped file: " + zippedFile.toString());
                     continue;
                 }
-                
+
                 // We write the unzipped file (=itf) in the same directory.
                 newFile = new File(zippedFile.getParent().toString() + File.separatorChar + fileName);
 

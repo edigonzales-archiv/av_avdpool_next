@@ -72,7 +72,7 @@ public class InfogripsFtp {
                     ftpClient.retrieveFile(ftpWorkingDir + File.separatorChar + ftpFileName, output);
                     files.add(downloadedFileName);                    
                 }
-                break;
+                //break;
             }
             
             ftpClient.disconnect();

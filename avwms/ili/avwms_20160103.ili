@@ -1,0 +1,139 @@
+INTERLIS 2.3;
+
+/** Dieses (inoffizielle) Modell dient zur Erstellung von leeren DB-Tabellen für
+ * die Bereitstellung des AV-WMS.
+ */
+!!@ technicalContact=mailto:agi@bd.so.ch
+!!@ furtherInformation=http://models.geo.so.ch/AGI/fubar
+
+MODEL SO_AVWMS_20160103 (de)
+AT "http://www.agi.so.ch"
+VERSION "2016-01-03"  =
+
+  UNIT
+    Grads = PI / 200.0 [INTERLIS.rad];
+
+  DOMAIN
+
+    LKoord = COORD 2480000.000 .. 2850000.000 [INTERLIS.m], 170000.000 .. 1310000.000 [INTERLIS.m], ROTATION 2 -> 1;
+    
+    Hoehe = -200.000 .. 1600.000 [INTERLIS.m];
+    
+    Prioritaet = 0 .. 99;
+    
+    BFSNr = 2400 .. 2699;
+    
+    Rotation = 0.0 .. 399.9 [Grads];
+
+  TOPIC Fixpunkte =
+
+    CLASS CPPT =
+      BFSNr : MANDATORY BFSNr;
+      Kategorie : MANDATORY TEXT*10;
+      Nummer : MANDATORY TEXT*255;
+      Geometry : LKoord;
+      Koordinate : MANDATORY TEXT*255;
+      Hoehe : Hoehe;
+      Punktzeichen : MANDATORY TEXT*20;
+    END CPPT;
+
+  END Fixpunkte;
+
+  
+  TOPIC Bodenbedeckung_projektiert =
+    CLASS LCSFPROJ =
+      BFSNr : MANDATORY BFSNr;
+      Qualitaet : MANDATORY TEXT*255;
+      Art : MANDATORY TEXT*255;
+      GWR_EGID : 1 .. 999999999;
+      Geometry : SURFACE WITH (ARCS,STRAIGHTS) VERTEX LKoord WITHOUT OVERLAPS>0.002;
+    END LCSFPROJ;
+  
+  END Bodenbedeckung_projektiert;
+
+  
+  TOPIC Bodenbedeckung =
+    
+    CLASS LCSF =
+      BFSNr : MANDATORY BFSNr;
+      Qualitaet : MANDATORY TEXT*255;
+      Art : MANDATORY TEXT*255;
+      GWR_EGID : 1 .. 999999999;
+      Geometry : AREA WITH (ARCS,STRAIGHTS) VERTEX LKoord WITHOUT OVERLAPS>0.002;
+    END LCSF;
+  
+    CLASS LCOBJ =
+      BFSNr : MANDATORY BFSNr;
+      Typ : MANDATORY TEXT*255;
+      Text : MANDATORY TEXT*255;
+      Ori : Rotation;
+      Pos : LKoord;
+    END LCOBJ;
+
+  END Bodenbedeckung;  
+
+  
+  TOPIC Einzelobjekte =
+    
+    CLASS SOSF =
+      BFSNr : MANDATORY BFSNr;
+      Gueltigkeit : MANDATORY TEXT*255;
+      Art : MANDATORY TEXT*255;
+      Qualitaet : MANDATORY TEXT*255;
+      GWR_EGID : 1 .. 999999999;
+      Geometry : SURFACE WITH (ARCS,STRAIGHTS) VERTEX LKoord WITHOUT OVERLAPS>0.002;
+    END SOSF;
+  
+    CLASS SOLI =
+      BFSNr : MANDATORY BFSNr;
+      Gueltigkeit : MANDATORY TEXT*255;
+      Art : MANDATORY TEXT*255;
+      Qualitaet : MANDATORY TEXT*255;
+      Geometry : POLYLINE WITH (ARCS,STRAIGHTS) VERTEX LKoord WITHOUT OVERLAPS>0.002;
+    END SOLI;
+
+    CLASS SOPT =
+      BFSNr : MANDATORY BFSNr;
+      Gueltigkeit : MANDATORY TEXT*255;
+      Art : MANDATORY TEXT*255;
+      Qualitaet : MANDATORY TEXT*255;
+      Geometry : LKoord;
+    END SOPT;
+
+    CLASS SOOBJ =
+      BFSNr : MANDATORY BFSNr;
+      Typ : MANDATORY TEXT*255;
+      Text : MANDATORY TEXT*255;
+      Ori : Rotation;
+      Pos : LKoord;
+    END SOOBJ;
+
+  END Einzelobjekte;    
+  
+  
+  TOPIC Nomenklatur =
+    
+    CLASS LNNA =
+      BFSNr : MANDATORY BFSNr;
+      Kategorie : MANDATORY TEXT*255;
+      Name : MANDATORY TEXT*255;
+      Ori : Rotation;
+      Pos : LKoord;
+    END LNNA;
+
+  END Nomenklatur;  
+  
+  
+  TOPIC Metadaten =
+  	
+  	CLASS Metadaten =
+  	  group_title : MANDATORY TEXT*255;
+  	  name : MANDATORY TEXT*255;
+  	  title : MANDATORY TEXT*255;
+  	  priority : Prioritaet;
+  	  abstract : MANDATORY TEXT*255;
+  	END Metadaten;
+  	
+  END Metadaten;
+
+END SO_AVWMS_20160103.

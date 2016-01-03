@@ -1,0 +1,37 @@
+INTERLIS 2.3;
+
+/** Dieses Modell beschreibt die Nachführungskreise der amtlichen Vermessung.
+ */
+!!@ technicalContact=mailto:agi@bd.so.ch
+!!@ IDGeoIV=SO-99
+!!@ furtherInformation=http://models.geo.so.ch/AGI/SO_AV_Nachfuehrungskreise_20151224.pdf
+MODEL SO_AV_Nachfuehrungskreise_20151224 (de)
+AT "http://www.agi.so.ch"
+VERSION "2015-12-24"  =
+
+  DOMAIN
+
+    Punkt = COORD 2480000.000 .. 2850000.000 [INTERLIS.m], 170000.000 .. 1310000.000 ,ROTATION 2 -> 1;
+
+    Flaeche = SURFACE WITH (ARCS,STRAIGHTS) VERTEX Punkt WITHOUT OVERLAPS>0.002;
+
+  STRUCTURE Einzelflaeche =
+    Geometrie : MANDATORY Flaeche;
+  END Einzelflaeche;
+
+  STRUCTURE Flaechen =
+    Geometrie : BAG {1..*} OF SO_AV_Nachfuehrungskreise_20151224.Einzelflaeche;
+  END Flaechen;
+
+  TOPIC AV_Nachfuehrungskreise =
+
+    CLASS AV_Nachfuehrungskreis =
+      Name : MANDATORY TEXT*255;
+      NF_Geometer : MANDATORY TEXT*255;
+      UID : TEXT*12;
+      Perimeter : MANDATORY SO_AV_Nachfuehrungskreise_20151224.Flaechen;
+    END AV_Nachfuehrungskreis;
+
+  END AV_Nachfuehrungskreise;
+
+END SO_AV_Nachfuehrungskreise_20151224.
