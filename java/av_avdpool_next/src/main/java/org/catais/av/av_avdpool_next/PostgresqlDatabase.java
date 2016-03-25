@@ -166,6 +166,10 @@ public class PostgresqlDatabase {
                         itfFileNames.add(itfFile.getAbsolutePath());
                     }
                     
+                    // Error handling:
+                    //  - file not found ?
+                    
+                    
                     // TODO: Could be a bug.
                     // If we do not create a new Config instance, there will be
                     // an error b/c of a closed connection.
