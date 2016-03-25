@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.catais.av.av_avdpool_next;
 
 import ch.ehi.ili2db.base.Ili2dbException;
@@ -24,10 +19,6 @@ import org.apache.commons.cli.ParseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-/**
- *
- * @author stefan
- */
 public class App {
 
     static final Logger logger = LogManager.getLogger(App.class.getName());

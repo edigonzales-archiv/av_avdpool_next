@@ -64,7 +64,7 @@ public class Ili2dbConfig {
         config.setMaxSqlNameLength("60");
         config.setStrokeArcs(config.STROKE_ARCS_ENABLE);
 
-        config.setSqlNull(config.SQL_NULL_ENABLE); // be less restrictive
+        config.setSqlNull(config.SQL_NULL_ENABLE); 
         config.setValue(SqlConfiguration.CREATE_GEOM_INDEX, "True");
         config.setTidHandling(config.TID_HANDLING_PROPERTY);
         config.setCreateFkIdx(config.CREATE_FKIDX_YES);
