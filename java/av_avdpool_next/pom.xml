@@ -50,12 +50,12 @@
         <dependency>
             <groupId>ch.interlis</groupId>
             <artifactId>ili2c</artifactId>
-            <version>4.5.21</version>
+            <version>4.5.21.1</version>
         </dependency>
         <dependency>
             <groupId>ch.interlis</groupId>
             <artifactId>ili2pg</artifactId>
-            <version>3.0.3</version>
+            <version>3.0.3.1</version>
         </dependency>   
     </dependencies>
     <repositories>

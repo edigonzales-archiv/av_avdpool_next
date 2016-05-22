@@ -5,6 +5,7 @@
  */
 package org.catais.av.av_avdpool_next;
 
+import ch.ehi.basics.logging.EhiLogger;
 import ch.ehi.ili2db.base.Ili2db;
 import ch.ehi.ili2db.base.Ili2dbException;
 import ch.ehi.ili2db.gui.Config;
@@ -127,6 +128,10 @@ public class PostgresqlDatabase {
 //        Config config = ili2dbConfig.getConfig(this.dbschemaTmp, this.modelsTmp);
 //        config.setDeleteMode(Config.DELETE_DATA);
 //        config.setConfigReadFromDb(true);
+        Ili2dbConfig ili2dbConfig = new Ili2dbConfig(params);
+        Config config = ili2dbConfig.getConfig(this.dbschemaTmp, this.modelsTmp);
+        config.setDeleteMode(Config.DELETE_DATA);
+        config.setConfigReadFromDb(true);
 
         // Download and import directory.
         // The directory where the itf files can be found that we want
@@ -169,24 +174,9 @@ public class PostgresqlDatabase {
                     // Error handling:
                     //  - file not found ?
                     
-                    
-                    // TODO: Could be a bug.
-                    // If we do not create a new Config instance, there will be
-                    // an error b/c of a closed connection.
-                
-                    
-                    // Get an ili2db configuration.
-                    // Delete all data (in the temporary) schema with .setDeleteMode()
-                    // (--deleteData).
-                    // .setConfigReadFromDb() is necessary since the schema/tables exists.
-                    Ili2dbConfig ili2dbConfig = new Ili2dbConfig(params);
-                    Config config = ili2dbConfig.getConfig(this.dbschemaTmp, this.modelsTmp);
-                    config.setDeleteMode(Config.DELETE_DATA);
-                    config.setConfigReadFromDb(true);
-
-
                     // Now import the itf into temporary schema.
                     config.setXtffile(itfFile.getAbsolutePath());
+                    //EhiLogger.getInstance().setTraceFilter(false);
                     Ili2db.runImport(config, "");
 
                     // Copy data into final schema and update additional
