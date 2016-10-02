@@ -39,6 +39,7 @@ import org.catais.av.av_avdpool_next.ili2db.Ili2dbConfig;
 public class PostgresqlDatabase {
 
     static final Logger logger = LogManager.getLogger(PostgresqlDatabase.class.getName());
+    
 
     // Shared database parameters (tmp=import && final=target schema)
     String dbhost = null;
@@ -156,13 +157,25 @@ public class PostgresqlDatabase {
                     int fosnr = Integer.parseInt(fosnrStr);
                     int lot = Integer.parseInt(lotStr);
 
+                    /* 2016-10-02:
+                    * No. Disable this check. Since the "real" (non-automatic-transformed) ITF 
+                    * do not have this suffix.
+                    * But do import only these real ones. -> new check.
+                    */
                     // Check if it is LV95.
-                    String lv95 = entry.getFileName().toString().substring(7, 11);
-                    if (!lv95.equalsIgnoreCase("lv95")) {
-                        logger.error("No lv95 file: " + entry.getFileName().toString());
-                        logger.error("Will continue with next file.");
-                        continue;
+//                    String lv95 = entry.getFileName().toString().substring(7, 11);
+//                    if (!lv95.equalsIgnoreCase("lv95")) {
+//                        logger.error("No lv95 file: " + entry.getFileName().toString());
+//                        logger.error("Will continue with next file.");
+//                        continue;
+//                    }
+                    
+                    if (entry.getFileName().toString().length() > 10) {
+                    	logger.error("File name too long.");
+                    	logger.error("Will continue with next file.");
+                    	continue;
                     }
+                    
 
                     // We need to unzip the files first.
                     File itfFile = unzipItf(entry.toAbsolutePath());
@@ -334,6 +347,10 @@ public class PostgresqlDatabase {
 
             String sql = null;
 
+            
+            // TODO: Except VIEWS!!!!
+            
+            
             // This query returns all tables that have the three additional
             // attributes (gem_bfs, los, lieferdatum). -> These are the tables
             // we need to deal with.
@@ -350,6 +367,7 @@ public class PostgresqlDatabase {
                     + "  AND col.table_schema = '" + dbschema + "'\n"
                     + "  AND tab.table_name = col.table_name\n"
                     + "  AND col.column_name IN ('gem_bfs', 'los', 'lieferdatum')\n"
+                    + "  AND table_type <> 'VIEW'\n"
                     + "  GROUP BY col.table_name\n"
                     + " ) as t\n"
                     + " WHERE count = 3\n"
@@ -362,7 +380,7 @@ public class PostgresqlDatabase {
                     + ") as attr\n"
                     + "WHERE tabs.table_name = attr.table_name;";
 
-            logger.trace("Data tables query: " + sql);
+            logger.error("Data tables query: " + sql);
 
             try {
                 con = DriverManager.getConnection(dburl);
