@@ -67,6 +67,8 @@ public class InfogripsFtp {
                 
                 // TODO: wie funktioniert das genau? wie/wann wird exception geworfen?
                 // Ist output.close() nicht mehr nötig?
+                
+                // -> error bricht ganzen download ab...
                 String downloadedFileName = ftpDownloadDir + File.separatorChar + ftpFileName;
                 try (OutputStream output = new FileOutputStream(downloadedFileName)) {
                     ftpClient.retrieveFile(ftpWorkingDir + File.separatorChar + ftpFileName, output);

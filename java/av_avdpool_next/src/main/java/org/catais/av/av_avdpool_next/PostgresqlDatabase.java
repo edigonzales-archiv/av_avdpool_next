@@ -145,7 +145,8 @@ public class PostgresqlDatabase {
 
         // Loop through the directory with the zip files, unzip and import
         // them.
-        try (DirectoryStream<Path> stream = Files.newDirectoryStream(importDirPath, "*.zip")) {
+        // 2016-11-25: no more zips...
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(importDirPath, "2*.itf")) {
             for (Path entry : stream) {
                 try {
                     logger.debug("Importing file: " + entry);
@@ -176,19 +177,22 @@ public class PostgresqlDatabase {
                     	continue;
                     }
                     
-
+                    // not needed anymore.
                     // We need to unzip the files first.
-                    File itfFile = unzipItf(entry.toAbsolutePath());
+//                    File itfFile = unzipItf(entry.toAbsolutePath());
 
-                    if (itfFile != null) {
-                        itfFileNames.add(itfFile.getAbsolutePath());
-                    }
+//                    if (itfFile != null) {
+//                        itfFileNames.add(itfFile.getAbsolutePath());
+//                    }
                     
                     // Error handling:
                     //  - file not found ?
                     
+//                    continue;
+                    
+                    
                     // Now import the itf into temporary schema.
-                    config.setXtffile(itfFile.getAbsolutePath());
+                    config.setXtffile(entry.toAbsolutePath().toString());
                     //EhiLogger.getInstance().setTraceFilter(false);
                     Ili2db.runImport(config, "");
 
@@ -380,7 +384,7 @@ public class PostgresqlDatabase {
                     + ") as attr\n"
                     + "WHERE tabs.table_name = attr.table_name;";
 
-            logger.error("Data tables query: " + sql);
+            logger.trace("Data tables query: " + sql);
 
             try {
                 con = DriverManager.getConnection(dburl);
